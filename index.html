@@ -1,0 +1,1854 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>café&redação — by isstudy_</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Fontes: Cormorant Garamond & Cinzel Decorative para estética serifada elegante (inspirada em Golsuka Kadila), Plus Jakarta Sans para leitura limpa e Caveat para anotações manuscritas -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            offwhite: '#F7F5EF',
+            rosaantigo: '#C98D8F',
+            verdesalvia: '#A7B59F',
+            verdementa: '#C7DCC8',
+            blush: '#EBC9C6',
+            douradofosco: '#C9A96B',
+            cafe: '#2C1D1A',
+            cafesuave: '#5C4843',
+          },
+          fontFamily: {
+            display: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+            ornate: ['"Cinzel Decorative"', '"Cormorant Garamond"', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            hand: ['"Caveat"', 'cursive'],
+          },
+          boxShadow: {
+            'paper': '0 12px 32px -8px rgba(44, 29, 26, 0.08), 0 4px 10px -2px rgba(201, 141, 143, 0.12)',
+            'card': '0 6px 20px -6px rgba(44, 29, 26, 0.06)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Estilos de textura de caderno, fitas washi e animações delicadas */
+    body {
+      background-color: #F7F5EF;
+      color: #2C1D1A;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-image: radial-gradient(#C9A96B22 1px, transparent 1px);
+      background-size: 24px 24px;
+      overflow-x: hidden;
+    }
+
+    /* Folha pautada para o recadinho inicial da Isa */
+    .notebook-paper {
+      background-color: #F7F5EF;
+      background-image: 
+        linear-gradient(90deg, transparent 36px, #C98D8F55 36px, #C98D8F55 38px, transparent 38px),
+        repeating-linear-gradient(to bottom, transparent 0px, transparent 31px, #A7B59F40 32px);
+      line-height: 32px;
+    }
+
+    /* Washi tape decorativa */
+    .washi-tape {
+      background: linear-gradient(135deg, rgba(235, 201, 198, 0.85), rgba(201, 141, 143, 0.78));
+      box-shadow: 0 2px 6px rgba(44, 29, 26, 0.08);
+      backdrop-filter: blur(2px);
+    }
+
+    .washi-tape-sage {
+      background: linear-gradient(135deg, rgba(199, 220, 200, 0.88), rgba(167, 181, 159, 0.82));
+      box-shadow: 0 2px 6px rgba(44, 29, 26, 0.08);
+    }
+
+    /* Animação suave do vapor do café */
+    @keyframes steamFloat {
+      0% { transform: translateY(0) scaleX(1); opacity: 0.2; }
+      50% { transform: translateY(-4px) scaleX(1.1); opacity: 0.75; }
+      100% { transform: translateY(-8px) scaleX(0.95); opacity: 0; }
+    }
+    .steam-1 { animation: steamFloat 2.8s ease-in-out infinite; }
+    .steam-2 { animation: steamFloat 2.8s ease-in-out 0.9s infinite; }
+    .steam-3 { animation: steamFloat 2.8s ease-in-out 1.7s infinite; }
+
+    /* Transição suave entre abas */
+    .tab-panel {
+      animation: fadeSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Barra de rolagem discreta */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #F7F5EF; }
+    ::-webkit-scrollbar-thumb { background: #C98D8F88; border-radius: 999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #C98D8F; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-blush selection:text-cafe">
+
+  <!-- ==================== MODAL INICIAL: NOTA DE CADERNO DA ISA ==================== -->
+  <div id="isaNoteModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-cafe/45 backdrop-blur-sm transition-opacity duration-300" role="dialog" aria-modal="true" aria-labelledby="isaNoteTitle">
+    <div class="relative w-full max-w-xl transform transition-all duration-300 scale-100">
+      <!-- Fita Washi Tape no topo -->
+      <div class="washi-tape w-32 h-7 mx-auto -mb-3.5 relative z-10 -rotate-2 rounded-sm border-x border-dashed border-offwhite/60"></div>
+
+      <!-- Papel pautado -->
+      <div class="notebook-paper relative rounded-2xl border-2 border-douradofosco/45 shadow-paper pt-8 pb-7 px-6 sm:pl-14 sm:pr-9 max-h-[88vh] overflow-y-auto">
+        <!-- Botão X no canto superior direito -->
+        <button onclick="closeIsaNote()" aria-label="Fechar recado da Isa" class="absolute top-3.5 right-3.5 w-9 h-9 rounded-full bg-blush/80 hover:bg-rosaantigo text-cafe hover:text-offwhite flex items-center justify-center transition-colors shadow-sm cursor-pointer">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+
+        <div class="flex items-center gap-2 mb-3">
+          <span class="inline-block px-3 py-0.5 rounded-full text-xs font-semibold tracking-wide bg-verdementa/70 text-cafe border border-verdesalvia/40">
+            recadinho de boas-vindas ☕
+          </span>
+        </div>
+
+        <h2 id="isaNoteTitle" class="font-display text-2xl sm:text-3xl font-bold text-cafe mb-3 tracking-tight">
+          bem vindo/a, eu sou a isa! :)
+        </h2>
+
+        <div class="space-y-3 text-[15px] sm:text-base text-cafe/95 leading-[32px] font-normal">
+          <p>
+            No momento, ainda sou vestibulanda, mas não se preocupem : não sou eu que gravo as aulas!
+          </p>
+          <p>
+            Organizei essa plataforma com o intuito de tentar ajudar quem tem dificuldade com redação, não de maneira direta, mas pelo menos da maneira que posso.
+          </p>
+          <p>
+            Não sou corretora e muito menos aluna nota 1000, mas sou apaixonada por fazer redação e penei muito para sair dos 800+ nas minhas redações esse ano e finalmente me solidificar nos 960, e mais que isso, aprender a escrever 😅
+          </p>
+          <p>
+            No mais, espero que consiga ajudar alguém
+          </p>
+          <div class="pt-2 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <div>
+              <p class="font-medium text-cafe">bons estudos!!</p>
+              <p class="font-hand text-2xl sm:text-3xl font-bold text-rosaantigo -mt-1">ass: isa</p>
+            </div>
+            <button onclick="closeIsaNote()" class="self-start sm:self-auto px-5 py-2.5 rounded-xl bg-rosaantigo hover:bg-rosaantigo/90 text-offwhite font-medium text-sm shadow-sm transition-all cursor-pointer flex items-center gap-2">
+              <span>começar a estudar</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== CABEÇALHO & IDENTIDADE VISUAL ==================== -->
+  <header class="sticky top-0 z-30 bg-offwhite/90 backdrop-blur-md border-b border-douradofosco/25">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 pt-4 pb-3">
+      <!-- Linha Superior: Logo + Botão reabrir nota -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <!-- Marca café&redação + xícara SVG -->
+        <div class="flex items-center justify-between sm:justify-start gap-3">
+          <a href="#competencias" onclick="switchTab('competencias'); return false;" class="group flex items-center gap-3 focus:outline-none">
+            <div>
+              <div class="flex items-center gap-2.5">
+                <h1 class="font-display text-3xl sm:text-4xl font-bold tracking-tight text-cafe leading-none">
+                  <span class="font-ornate text-rosaantigo font-normal">c</span>afé<span class="italic font-display text-douradofosco mx-0.5">&amp;</span><span class="font-ornate text-rosaantigo font-normal">r</span>edação
+                </h1>
+                <!-- Xicarázinha de café delicada em SVG nas cores do site -->
+                <svg class="w-9 h-9 sm:w-10 sm:h-10 shrink-0 transition-transform duration-300 group-hover:scale-105" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <!-- Vaporzinho -->
+                  <path class="steam-1" d="M23 17C21.5 14.5 24.5 12 23 9.5" stroke="#C9A96B" stroke-width="2.2" stroke-linecap="round"/>
+                  <path class="steam-2" d="M31 15C29.5 12.2 32.5 9.5 31 6.8" stroke="#C98D8F" stroke-width="2.2" stroke-linecap="round"/>
+                  <path class="steam-3" d="M39 17C37.5 14.5 40.5 12 39 9.5" stroke="#A7B59F" stroke-width="2.2" stroke-linecap="round"/>
+                  <!-- Pires -->
+                  <ellipse cx="31" cy="51" rx="20" ry="4" fill="#EBC9C6" stroke="#C9A96B" stroke-width="1.8"/>
+                  <!-- Alça da xícara -->
+                  <path d="M45 27H49.5C52.5 27 55 29.5 55 32.5C55 35.5 52.5 38 49.5 38H44.5" stroke="#C9A96B" stroke-width="2.8" stroke-linecap="round"/>
+                  <!-- Corpo da xícara -->
+                  <path d="M16 24H46V35C46 43.2843 39.2843 50 31 50C22.7157 50 16 43.2843 16 35V24Z" fill="#C98D8F" stroke="#2C1D1A" stroke-width="1.6"/>
+                  <!-- Borda interna / café -->
+                  <ellipse cx="31" cy="24" rx="15" ry="3.2" fill="#F7F5EF" stroke="#2C1D1A" stroke-width="1.4"/>
+                  <ellipse cx="31" cy="24.4" rx="12.2" ry="2.1" fill="#6F4E37"/>
+                  <!-- Detalhe coraçãozinho latte art -->
+                  <path d="M31 38.5C31 38.5 26.5 35.4 26.5 32.6C26.5 31.2 27.6 30.2 28.9 30.2C29.8 30.2 30.6 30.7 31 31.4C31.4 30.7 32.2 30.2 33.1 30.2C34.4 30.2 35.5 31.2 35.5 32.6C35.5 35.4 31 38.5 31 38.5Z" fill="#F7F5EF" fill-opacity="0.85"/>
+                </svg>
+              </div>
+              <p class="text-xs sm:text-sm text-cafesuave tracking-widest lowercase mt-0.5 pl-0.5 font-medium">
+                by <span class="text-rosaantigo font-semibold">isstudy_</span>
+              </p>
+            </div>
+          </a>
+
+          <!-- Botão compacto para reabrir a nota da Isa -->
+          <button onclick="openIsaNote()" class="sm:hidden px-3 py-1.5 rounded-full bg-blush/70 hover:bg-blush text-cafe text-xs font-medium border border-rosaantigo/30 transition-colors cursor-pointer flex items-center gap-1.5">
+            <span>💌</span>
+            <span>nota da isa</span>
+          </button>
+        </div>
+
+        <button onclick="openIsaNote()" class="hidden sm:inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blush/60 hover:bg-blush text-cafe text-xs font-medium border border-rosaantigo/35 transition-all cursor-pointer">
+          <span>💌</span>
+          <span>ler recadinho da isa</span>
+        </button>
+      </div>
+
+      <!-- Barra de Navegação das 5 Abas -->
+      <nav aria-label="Navegação principal" class="mt-3.5 flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-1 no-scrollbar">
+        <button data-tab="competencias" onclick="switchTab('competencias')" class="nav-tab active-tab shrink-0 px-4 py-2 rounded-xl text-sm font-semibold transition-all cursor-pointer flex items-center gap-2 bg-rosaantigo text-offwhite shadow-sm">
+          <span>🏛️</span>
+          <span>Competências ENEM</span>
+        </button>
+        <button data-tab="aulas" onclick="switchTab('aulas')" class="nav-tab shrink-0 px-4 py-2 rounded-xl text-sm font-medium transition-all cursor-pointer flex items-center gap-2 bg-offwhite hover:bg-blush/45 text-cafe border border-douradofosco/30">
+          <span>🎬</span>
+          <span>Aulas</span>
+        </button>
+        <button data-tab="correcao" onclick="switchTab('correcao')" class="nav-tab shrink-0 px-4 py-2 rounded-xl text-sm font-medium transition-all cursor-pointer flex items-center gap-2 bg-offwhite hover:bg-blush/45 text-cafe border border-douradofosco/30">
+          <span>✍️</span>
+          <span>Correção</span>
+        </button>
+        <button data-tab="repertorios" onclick="switchTab('repertorios')" class="nav-tab shrink-0 px-4 py-2 rounded-xl text-sm font-medium transition-all cursor-pointer flex items-center gap-2 bg-offwhite hover:bg-blush/45 text-cafe border border-douradofosco/30">
+          <span>📚</span>
+          <span>Repertórios</span>
+        </button>
+        <button data-tab="registro" onclick="switchTab('registro')" class="nav-tab shrink-0 px-4 py-2 rounded-xl text-sm font-medium transition-all cursor-pointer flex items-center gap-2 bg-offwhite hover:bg-blush/45 text-cafe border border-douradofosco/30">
+          <span>📓</span>
+          <span>Registro</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==================== CONTEÚDO PRINCIPAL ==================== -->
+  <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-7 sm:py-10">
+
+    <!-- ===================================================================== -->
+    <!-- ABA 1: COMPETÊNCIAS ENEM                                              -->
+    <!-- ===================================================================== -->
+    <section id="tab-competencias" class="tab-panel space-y-8">
+      <!-- Cabeçalho da Aba -->
+      <div class="bg-white/80 rounded-3xl p-6 sm:p-8 border border-douradofosco/30 shadow-card relative overflow-hidden">
+        <div class="washi-tape-sage w-28 h-6 absolute -top-2 right-8 rotate-3 rounded-sm"></div>
+        <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-verdementa/70 text-cafe mb-3">
+          guia estrutural • matriz de referência
+        </span>
+        <h2 class="font-display text-3xl sm:text-4xl font-bold text-cafe mb-3">
+          As 5 Competências da Redação do ENEM
+        </h2>
+        <p class="text-cafesuave text-base sm:text-lg leading-relaxed max-w-3xl">
+          A ideia é entender as competências como partes de uma <strong class="text-cafe font-semibold">mesma construção</strong>, e não como cinco regras soltas. Na prática, a banca avalia uma sequência lógica:
+        </p>
+
+        <!-- Fluxo visual rápido -->
+        <div class="mt-5 flex flex-wrap items-center gap-2 text-xs sm:text-sm font-semibold text-cafe">
+          <span class="px-3.5 py-2 rounded-xl bg-blush/65 border border-rosaantigo/30">✍️ sabe escrever</span>
+          <span class="text-douradofosco font-bold">→</span>
+          <span class="px-3.5 py-2 rounded-xl bg-verdementa/65 border border-verdesalvia/40">🎯 sabe organizar</span>
+          <span class="text-douradofosco font-bold">→</span>
+          <span class="px-3.5 py-2 rounded-xl bg-blush/65 border border-rosaantigo/30">🧠 sabe argumentar</span>
+          <span class="text-douradofosco font-bold">→</span>
+          <span class="px-3.5 py-2 rounded-xl bg-verdementa/65 border border-verdesalvia/40">🔗 sabe conectar</span>
+          <span class="text-douradofosco font-bold">→</span>
+          <span class="px-3.5 py-2 rounded-xl bg-douradofosco/25 border border-douradofosco/50">🛠️ sabe propor solução</span>
+        </div>
+
+        <!-- Analogia da Casa -->
+        <div class="mt-7 pt-6 border-t border-douradofosco/20">
+          <h3 class="font-display text-2xl font-bold text-cafe mb-3 flex items-center gap-2">
+            <span>🏠</span>
+            <span>Pense na sua redação como uma casa:</span>
+          </h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+            <div class="p-3.5 rounded-2xl bg-offwhite border border-douradofosco/30">
+              <span class="text-xs font-bold uppercase tracking-wider text-rosaantigo">C1 • Forma</span>
+              <p class="text-sm font-medium text-cafe mt-1">Você sabe construir as paredes</p>
+            </div>
+            <div class="p-3.5 rounded-2xl bg-offwhite border border-douradofosco/30">
+              <span class="text-xs font-bold uppercase tracking-wider text-verdesalvia">C2 • Direção</span>
+              <p class="text-sm font-medium text-cafe mt-1">Você sabe o que está construindo</p>
+            </div>
+            <div class="p-3.5 rounded-2xl bg-offwhite border border-douradofosco/30">
+              <span class="text-xs font-bold uppercase tracking-wider text-rosaantigo">C3 • Profundidade</span>
+              <p class="text-sm font-medium text-cafe mt-1">Você sabe organizar os cômodos</p>
+            </div>
+            <div class="p-3.5 rounded-2xl bg-offwhite border border-douradofosco/30">
+              <span class="text-xs font-bold uppercase tracking-wider text-verdesalvia">C4 • Conexão</span>
+              <p class="text-sm font-medium text-cafe mt-1">Você sabe fazer tudo se conectar</p>
+            </div>
+            <div class="p-3.5 rounded-2xl bg-offwhite border border-douradofosco/30">
+              <span class="text-xs font-bold uppercase tracking-wider text-douradofosco">C5 • Solução</span>
+              <p class="text-sm font-medium text-cafe mt-1">Você sabe terminar e tornar funcional</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cards Detalhados C1 a C5 -->
+      <div class="space-y-6">
+
+        <!-- COMPETÊNCIA 1 -->
+        <article class="bg-white/85 rounded-3xl p-6 sm:p-8 border border-rosaantigo/35 shadow-card">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+            <div class="flex items-center gap-3">
+              <span class="w-10 h-10 rounded-2xl bg-rosaantigo text-offwhite font-display text-xl font-bold flex items-center justify-center shadow-sm">①</span>
+              <div>
+                <span class="text-xs font-bold uppercase tracking-widest text-rosaantigo">Competência 1 • 200 pontos</span>
+                <h3 class="font-display text-2xl sm:text-3xl font-bold text-cafe">“Você sabe escrever?”</h3>
+              </div>
+            </div>
+            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-blush/60 text-cafe">Norma-padrão</span>
+          </div>
+
+          <p class="text-cafesuave leading-relaxed mb-4">
+            A primeira competência avalia o <strong class="text-cafe">domínio da norma-padrão da língua portuguesa</strong>. Não se trata simplesmente de “escrever bonito”, mas de conseguir escrever de maneira <strong class="text-cafe">formal, clara e correta</strong>.
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+            <div class="bg-offwhite rounded-2xl p-4 border border-douradofosco/25">
+              <h4 class="font-semibold text-cafe text-sm mb-2.5 flex items-center gap-1.5">
+                <span>🔍</span> O que é observado na prática:
+              </h4>
+              <ul class="grid grid-cols-2 gap-1.5 text-sm text-cafesuave">
+                <li class="flex items-center gap-1.5"><span class="text-rosaantigo">•</span> Concordância</li>
+                <li class="flex items-center gap-1.5"><span class="text-rosaantigo">•</span> Regência</li>
+                <li class="flex items-center gap-1.5"><span class="text-rosaantigo">•</span> Pontuação</li>
+                <li class="flex items-center gap-1.5"><span class="text-rosaantigo">•</span> Ortografia</li>
+                <li class="flex items-center gap-1.5"><span class="text-rosaantigo">•</span> Colocação pronominal</li>
+                <li class="flex items-center gap-1.5"><span class="text-rosaantigo">•</span> Construção das frases</li>
+                <li class="flex items-center gap-1.5"><span class="text-rosaantigo">•</span> Escolha vocabular</li>
+                <li class="flex items-center gap-1.5"><span class="text-rosaantigo">•</span> Períodos bem estruturados</li>
+              </ul>
+            </div>
+
+            <div class="bg-verdementa/30 rounded-2xl p-4 border border-verdesalvia/40 flex flex-col justify-between">
+              <div>
+                <h4 class="font-semibold text-cafe text-sm mb-2 flex items-center gap-1.5">
+                  <span>🧩</span> A lógica da clareza:
+                </h4>
+                <p class="text-sm text-cafesuave leading-relaxed mb-3">
+                  Se você tem uma boa ideia, mas a forma de escrevê-la atrapalha a compreensão, você perde pontos. Não adianta encher o texto de palavras difíceis e produzir frases confusas. Prefira a precisão:
+                </p>
+                <div class="p-3 rounded-xl bg-white/80 border border-verdesalvia/30 text-sm italic text-cafe">
+                  “Esse cenário dificulta o acesso da população aos serviços públicos.”
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-blush/40 border border-rosaantigo/30 flex items-start gap-3">
+            <span class="text-xl">💡</span>
+            <p class="text-sm text-cafe leading-relaxed">
+              <strong>Dedução importante:</strong> A C1 não pergunta <em>“você escreve bonito?”</em>. Ela pergunta: <strong>“Você consegue transformar seu pensamento em uma linguagem formal e compreensível?”</strong>
+            </p>
+          </div>
+        </article>
+
+        <!-- COMPETÊNCIA 2 -->
+        <article class="bg-white/85 rounded-3xl p-6 sm:p-8 border border-verdesalvia/45 shadow-card">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+            <div class="flex items-center gap-3">
+              <span class="w-10 h-10 rounded-2xl bg-verdesalvia text-offwhite font-display text-xl font-bold flex items-center justify-center shadow-sm">②</span>
+              <div>
+                <span class="text-xs font-bold uppercase tracking-widest text-verdesalvia">Competência 2 • 200 pontos</span>
+                <h3 class="font-display text-2xl sm:text-3xl font-bold text-cafe">“Você entendeu o que estava sendo pedido?”</h3>
+              </div>
+            </div>
+            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-verdementa/70 text-cafe">Tema &amp; Repertório</span>
+          </div>
+
+          <p class="text-cafesuave leading-relaxed mb-5">
+            Avalia se você <strong class="text-cafe">compreendeu o tema</strong>, respeitou o <strong class="text-cafe">recorte temático</strong> e desenvolveu o texto dentro do gênero <strong class="text-cafe">dissertativo-argumentativo</strong>. É a pergunta central: <em>“Você está realmente respondendo à proposta ou apenas falando sobre algo parecido?”</em>
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+            <!-- Exemplo de Recorte -->
+            <div class="bg-offwhite rounded-2xl p-4 border border-douradofosco/25">
+              <span class="text-xs font-bold uppercase tracking-wider text-douradofosco">Exemplo prático de recorte</span>
+              <p class="font-display text-lg font-bold text-cafe mt-1 mb-2">
+                Tema: “Desafios para a valorização da cultura indígena no Brasil”
+              </p>
+              <p class="text-sm text-cafesuave mb-2">
+                <strong class="text-cafe">Dentro do recorte:</strong> povos indígenas, preconceito, apagamento cultural, educação e políticas públicas.
+              </p>
+              <p class="text-sm text-rosaantigo font-medium">
+                ⚠️ Atenção: falar genericamente apenas sobre “a importância da cultura brasileira” afasta o texto do recorte exigido.
+              </p>
+            </div>
+
+            <!-- Fórmula do Repertório -->
+            <div class="bg-blush/35 rounded-2xl p-4 border border-rosaantigo/30">
+              <span class="text-xs font-bold uppercase tracking-wider text-rosaantigo">Como legitimar o repertório</span>
+              <div class="my-2 px-3 py-2 rounded-xl bg-white/85 text-xs sm:text-sm font-bold text-cafe text-center border border-rosaantigo/25">
+                REPERTÓRIO → EXPLICAÇÃO → RELAÇÃO COM O TEMA
+              </div>
+              <p class="text-sm text-cafesuave leading-relaxed">
+                Não basta citar <em>“Segundo Paulo Freire…”</em> e seguir adiante. Veja como conectar ao tema:
+              </p>
+              <p class="mt-2 p-3 rounded-xl bg-white/80 text-xs sm:text-sm text-cafe leading-relaxed border border-douradofosco/25">
+                “Paulo Freire defende uma educação capaz de desenvolver a consciência crítica dos indivíduos. Nesse sentido, a ausência de uma formação escolar que valorize a diversidade cultural contribui para a permanência de estereótipos sobre os povos indígenas.”
+              </p>
+            </div>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-verdementa/40 border border-verdesalvia/40 flex items-start gap-3">
+            <span class="text-xl">💡</span>
+            <p class="text-sm text-cafe leading-relaxed">
+              <strong>Dedução:</strong> C2 = <strong>pertinência</strong>. Tudo na redação precisa responder à pergunta: <em>“Isso tem a ver diretamente com o tema?”</em>
+            </p>
+          </div>
+        </article>
+
+        <!-- COMPETÊNCIA 3 -->
+        <article class="bg-white/85 rounded-3xl p-6 sm:p-8 border border-rosaantigo/35 shadow-card">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+            <div class="flex items-center gap-3">
+              <span class="w-10 h-10 rounded-2xl bg-rosaantigo text-offwhite font-display text-xl font-bold flex items-center justify-center shadow-sm">③</span>
+              <div>
+                <span class="text-xs font-bold uppercase tracking-widest text-rosaantigo">Competência 3 • 200 pontos</span>
+                <h3 class="font-display text-2xl sm:text-3xl font-bold text-cafe">“Seu argumento realmente prova o que você está dizendo?”</h3>
+              </div>
+            </div>
+            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-blush/60 text-cafe">Projeto de Texto</span>
+          </div>
+
+          <p class="text-cafesuave leading-relaxed mb-5">
+            Esta é a competência da <strong class="text-cafe">argumentação e autoria</strong>. Existe uma diferença decisiva entre apenas emitir uma opinião solta e demonstrar por que aquele problema acontece:
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+            <div class="p-4 rounded-2xl bg-rosaantigo/10 border border-rosaantigo/35">
+              <span class="inline-block px-2.5 py-0.5 rounded-md bg-rosaantigo/20 text-cafe text-xs font-bold mb-2">❌ Apenas Opinião (Afirmação solta)</span>
+              <p class="text-sm text-cafe italic">
+                “A sociedade precisa valorizar mais a cultura indígena.”
+              </p>
+              <p class="text-xs text-cafesuave mt-2">Diz o que deveria acontecer, mas não explica as causas nem os efeitos.</p>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-verdementa/35 border border-verdesalvia/45">
+              <span class="inline-block px-2.5 py-0.5 rounded-md bg-verdesalvia/30 text-cafe text-xs font-bold mb-2">✅ Argumentação Fundamentada</span>
+              <p class="text-sm text-cafe leading-relaxed">
+                “A desvalorização da cultura indígena é intensificada pela representação estereotipada desses povos, frequentemente reduzidos a imagens folclóricas e descontextualizadas. Como consequência, suas manifestações culturais deixam de ser reconhecidas como parte viva da sociedade brasileira.”
+              </p>
+            </div>
+          </div>
+
+          <div class="bg-offwhite rounded-2xl p-4 border border-douradofosco/30 mb-5">
+            <h4 class="font-semibold text-cafe text-sm mb-2.5">🧠 Linhas de raciocínio que organizam o parágrafo:</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs sm:text-sm font-semibold text-cafe text-center">
+              <div class="p-2.5 rounded-xl bg-white border border-douradofosco/25">CAUSA → EXPLICAÇÃO → CONSEQUÊNCIA</div>
+              <div class="p-2.5 rounded-xl bg-white border border-douradofosco/25">PROBLEMA → POR QUE ACONTECE → EFEITO</div>
+              <div class="p-2.5 rounded-xl bg-white border border-douradofosco/25">TESE → ARGUMENTO → REPERTÓRIO → ANÁLISE</div>
+            </div>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-blush/40 border border-rosaantigo/30 flex items-start gap-3">
+            <span class="text-xl">💡</span>
+            <p class="text-sm text-cafe leading-relaxed">
+              <strong>Dedução:</strong> Se a C2 pergunta <em>“Você entendeu o problema?”</em>, a C3 pergunta: <strong>“Você conseguiu demonstrar por que sua interpretação desse problema faz sentido?”</strong>
+            </p>
+          </div>
+        </article>
+
+        <!-- COMPETÊNCIA 4 -->
+        <article class="bg-white/85 rounded-3xl p-6 sm:p-8 border border-verdesalvia/45 shadow-card">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+            <div class="flex items-center gap-3">
+              <span class="w-10 h-10 rounded-2xl bg-verdesalvia text-offwhite font-display text-xl font-bold flex items-center justify-center shadow-sm">④</span>
+              <div>
+                <span class="text-xs font-bold uppercase tracking-widest text-verdesalvia">Competência 4 • 200 pontos</span>
+                <h3 class="font-display text-2xl sm:text-3xl font-bold text-cafe">“Seu texto flui?”</h3>
+              </div>
+            </div>
+            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-verdementa/70 text-cafe">Coesão Textual</span>
+          </div>
+
+          <p class="text-cafesuave leading-relaxed mb-4">
+            Repetir sempre <em>“Além disso…”</em> ou <em>“Portanto…”</em> faz cada frase parecer existir separadamente. A C4 observa como você conecta <strong class="text-cafe">frases, períodos, parágrafos e ideias</strong>.
+          </p>
+
+          <div class="bg-offwhite rounded-2xl p-4 border border-douradofosco/30 mb-5">
+            <p class="text-sm text-cafe font-medium mb-3">
+              🧩 <strong>Pense na C4 como uma ponte:</strong> cada ideia é uma ilha, e os conectivos são as pontes que indicam a relação lógica entre elas.
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5 text-xs">
+              <div class="p-3 rounded-xl bg-white border border-douradofosco/25">
+                <span class="font-bold text-rosaantigo block mb-1">Causa</span>
+                <p class="text-cafesuave">porque, visto que, uma vez que</p>
+              </div>
+              <div class="p-3 rounded-xl bg-white border border-douradofosco/25">
+                <span class="font-bold text-verdesalvia block mb-1">Consequência</span>
+                <p class="text-cafesuave">portanto, assim, consequentemente</p>
+              </div>
+              <div class="p-3 rounded-xl bg-white border border-douradofosco/25">
+                <span class="font-bold text-douradofosco block mb-1">Contraste</span>
+                <p class="text-cafesuave">entretanto, contudo, embora</p>
+              </div>
+              <div class="p-3 rounded-xl bg-white border border-douradofosco/25">
+                <span class="font-bold text-rosaantigo block mb-1">Adição</span>
+                <p class="text-cafesuave">além disso, ademais, outrossim</p>
+              </div>
+              <div class="p-3 rounded-xl bg-white border border-douradofosco/25">
+                <span class="font-bold text-verdesalvia block mb-1">Explicação</span>
+                <p class="text-cafesuave">nesse sentido, isto é, dessa maneira</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-verdementa/40 border border-verdesalvia/40 flex items-start gap-3">
+            <span class="text-xl">💡</span>
+            <p class="text-sm text-cafe leading-relaxed">
+              <strong>Dedução:</strong> Usar muitos conectivos ≠ ter boa coesão. O objetivo é fazer o leitor sentir: <strong>“Eu entendi exatamente como essa ideia levou à próxima.”</strong>
+            </p>
+          </div>
+        </article>
+
+        <!-- COMPETÊNCIA 5 -->
+        <article class="bg-white/85 rounded-3xl p-6 sm:p-8 border border-douradofosco/45 shadow-card">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+            <div class="flex items-center gap-3">
+              <span class="w-10 h-10 rounded-2xl bg-douradofosco text-offwhite font-display text-xl font-bold flex items-center justify-center shadow-sm">⑤</span>
+              <div>
+                <span class="text-xs font-bold uppercase tracking-widest text-douradofosco">Competência 5 • 200 pontos</span>
+                <h3 class="font-display text-2xl sm:text-3xl font-bold text-cafe">“Você sabe transformar o problema em ação?”</h3>
+              </div>
+            </div>
+            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-douradofosco/20 text-cafe">Proposta de Intervenção</span>
+          </div>
+
+          <p class="text-cafesuave leading-relaxed mb-4">
+            Não basta escrever <em>“O governo deve resolver o problema”</em>. A proposta precisa ser <strong class="text-cafe">concreta</strong> e nascer diretamente dos problemas discutidos na sua argumentação.
+          </p>
+
+          <!-- Fórmula visual dos 5 elementos -->
+          <div class="mb-5">
+            <div class="px-4 py-2.5 rounded-2xl bg-blush/55 border border-rosaantigo/35 text-center font-bold text-xs sm:text-sm text-cafe mb-4">
+              🧠 Fórmula: AGENTE + AÇÃO + MEIO/MODO + FINALIDADE + DETALHAMENTO
+            </div>
+
+            <div class="overflow-x-auto rounded-2xl border border-douradofosco/30">
+              <table class="w-full text-left border-collapse text-sm">
+                <thead>
+                  <tr class="bg-offwhite border-b border-douradofosco/30 text-cafe">
+                    <th class="py-3 px-4 font-bold">Elemento</th>
+                    <th class="py-3 px-4 font-bold">Pergunta-chave</th>
+                    <th class="py-3 px-4 font-bold">Exemplo aplicado</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-douradofosco/20 bg-white/70">
+                  <tr>
+                    <td class="py-2.5 px-4 font-semibold text-rosaantigo">Agente</td>
+                    <td class="py-2.5 px-4 text-cafesuave">Quem vai fazer?</td>
+                    <td class="py-2.5 px-4 text-cafe">O Ministério da Educação</td>
+                  </tr>
+                  <tr>
+                    <td class="py-2.5 px-4 font-semibold text-verdesalvia">Ação</td>
+                    <td class="py-2.5 px-4 text-cafesuave">O que vai fazer?</td>
+                    <td class="py-2.5 px-4 text-cafe">deve ampliar projetos de educação intercultural</td>
+                  </tr>
+                  <tr>
+                    <td class="py-2.5 px-4 font-semibold text-douradofosco">Meio / Modo</td>
+                    <td class="py-2.5 px-4 text-cafesuave">Como vai fazer?</td>
+                    <td class="py-2.5 px-4 text-cafe">por meio da inclusão de conteúdos sobre culturas indígenas nos materiais didáticos</td>
+                  </tr>
+                  <tr>
+                    <td class="py-2.5 px-4 font-semibold text-rosaantigo">Finalidade</td>
+                    <td class="py-2.5 px-4 text-cafesuave">Para quê?</td>
+                    <td class="py-2.5 px-4 text-cafe">a fim de combater estereótipos historicamente reproduzidos</td>
+                  </tr>
+                  <tr>
+                    <td class="py-2.5 px-4 font-semibold text-verdesalvia">Detalhamento</td>
+                    <td class="py-2.5 px-4 text-cafesuave">Como tornar mais específico?</td>
+                    <td class="py-2.5 px-4 text-cafe">com a participação de pesquisadores e representantes indígenas na elaboração desses conteúdos.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-douradofosco/15 border border-douradofosco/35 flex items-start gap-3">
+            <span class="text-xl">💡</span>
+            <p class="text-sm text-cafe leading-relaxed">
+              <strong>Coerência final:</strong> Se você discutiu <em>falta de educação → estereótipos</em>, não faz sentido concluir pedindo <em>mais hospitais</em>. A intervenção é a resposta lógica ao caminho que você construiu.
+            </p>
+          </div>
+        </article>
+      </div>
+
+      <!-- Fechamento: A Grande Sacada / Redação Nota 1000 -->
+      <div class="bg-gradient-to-br from-blush/55 via-offwhite to-verdementa/45 rounded-3xl p-6 sm:p-8 border border-douradofosco/40 shadow-card">
+        <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-white/80 text-cafe mb-3">
+          🌟 visão panorâmica
+        </span>
+        <h3 class="font-display text-2xl sm:text-3xl font-bold text-cafe mb-3">
+          A Grande Sacada: o que torna uma redação convincente?
+        </h3>
+        <p class="text-cafesuave text-sm sm:text-base leading-relaxed mb-5">
+          As competências funcionam como uma cadeia: <strong class="text-cafe">LINGUAGEM → COMPREENSÃO → ARGUMENTAÇÃO → COESÃO → INTERVENÇÃO</strong>. É por isso que um texto pode ter ótimos repertórios e ainda assim não alcançar os 900+, caso falhe em algum elo dessa corrente.
+        </p>
+
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5 mb-5 text-center">
+          <div class="p-3 rounded-2xl bg-white/85 border border-rosaantigo/30">
+            <div class="font-display text-lg font-bold text-rosaantigo">C1</div>
+            <div class="text-xs font-semibold text-cafe">Forma</div>
+          </div>
+          <div class="p-3 rounded-2xl bg-white/85 border border-verdesalvia/40">
+            <div class="font-display text-lg font-bold text-verdesalvia">C2</div>
+            <div class="text-xs font-semibold text-cafe">Direção</div>
+          </div>
+          <div class="p-3 rounded-2xl bg-white/85 border border-rosaantigo/30">
+            <div class="font-display text-lg font-bold text-rosaantigo">C3</div>
+            <div class="text-xs font-semibold text-cafe">Profundidade</div>
+          </div>
+          <div class="p-3 rounded-2xl bg-white/85 border border-verdesalvia/40">
+            <div class="font-display text-lg font-bold text-verdesalvia">C4</div>
+            <div class="text-xs font-semibold text-cafe">Conexão</div>
+          </div>
+          <div class="col-span-2 sm:col-span-1 p-3 rounded-2xl bg-white/85 border border-douradofosco/45">
+            <div class="font-display text-lg font-bold text-douradofosco">C5</div>
+            <div class="text-xs font-semibold text-cafe">Solução</div>
+          </div>
+        </div>
+
+        <blockquote class="p-4 sm:p-5 rounded-2xl bg-white/90 border-l-4 border-rosaantigo text-sm sm:text-base text-cafe leading-relaxed">
+          “Uma redação nota 1000 não é um texto cheio de palavras difíceis. É uma redação em que o leitor percebe: <strong>essa pessoa entendeu o problema, escolheu uma interpretação, provou essa interpretação, conectou tudo com clareza e apresentou uma solução que responde ao que foi discutido.</strong>”
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- ABA 2: AULAS                                                          -->
+    <!-- ===================================================================== -->
+    <section id="tab-aulas" class="tab-panel hidden space-y-8">
+      <!-- Aviso da Isa -->
+      <div class="bg-blush/45 rounded-3xl p-6 sm:p-7 border border-rosaantigo/35 shadow-card relative">
+        <div class="flex items-start gap-3.5">
+          <span class="text-2xl sm:text-3xl shrink-0">☕</span>
+          <div>
+            <span class="text-xs font-bold uppercase tracking-widest text-rosaantigo block mb-1">aviso da isa</span>
+            <p class="text-cafe text-sm sm:text-base leading-relaxed">
+              “como eu disse, as aulas obviamente não são dadas por mim pela falta de autoridade, mas tentei separar professores que confio que postam conteúdos de maneira gratuita no YouTube para ajudar quem ainda está perdido nesse processo :)”
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trilhas de Aulas -->
+      <div class="space-y-8">
+
+        <!-- Trilha 1 -->
+        <div>
+          <div class="flex items-center gap-2.5 mb-4">
+            <span class="w-8 h-8 rounded-xl bg-verdementa/80 text-cafe flex items-center justify-center text-base">🍚</span>
+            <h3 class="font-display text-2xl sm:text-3xl font-bold text-cafe">Feijão com arroz da gramática na redação</h3>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <a href="https://youtu.be/y73BWhksxBk?si=E_oQTlPJIwWYTnjN" target="_blank" rel="noopener noreferrer" class="group bg-white/85 hover:bg-white rounded-2xl p-5 border border-douradofosco/30 hover:border-rosaantigo shadow-card transition-all flex flex-col justify-between">
+              <div>
+                <span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blush/60 text-cafe mb-3">C4 • Coesão</span>
+                <h4 class="font-display text-xl font-bold text-cafe group-hover:text-rosaantigo transition-colors">Melhores conectivos</h4>
+                <p class="text-sm text-cafesuave mt-1">por <strong class="text-cafe">Luma e Ponto</strong></p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-douradofosco/15 flex items-center justify-between text-xs font-semibold text-rosaantigo">
+                <span>assistir no YouTube</span>
+                <span class="group-hover:translate-x-1 transition-transform">↗</span>
+              </div>
+            </a>
+
+            <a href="https://youtu.be/6u3JcHBEZEU?si=AUAXl4hf0TSCOux0" target="_blank" rel="noopener noreferrer" class="group bg-white/85 hover:bg-white rounded-2xl p-5 border border-douradofosco/30 hover:border-rosaantigo shadow-card transition-all flex flex-col justify-between">
+              <div>
+                <span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold bg-verdementa/70 text-cafe mb-3">C1 • Gramática</span>
+                <h4 class="font-display text-xl font-bold text-cafe group-hover:text-rosaantigo transition-colors">Gramática na prática</h4>
+                <p class="text-sm text-cafesuave mt-1">por <strong class="text-cafe">Fernanda Pessoa</strong></p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-douradofosco/15 flex items-center justify-between text-xs font-semibold text-rosaantigo">
+                <span>assistir no YouTube</span>
+                <span class="group-hover:translate-x-1 transition-transform">↗</span>
+              </div>
+            </a>
+
+            <a href="https://youtu.be/KpQzFnQ5qys?si=pCZfhZ3xfZH1VFls" target="_blank" rel="noopener noreferrer" class="group bg-white/85 hover:bg-white rounded-2xl p-5 border border-douradofosco/30 hover:border-rosaantigo shadow-card transition-all flex flex-col justify-between">
+              <div>
+                <span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold bg-verdementa/70 text-cafe mb-3">C1 • Crase</span>
+                <h4 class="font-display text-xl font-bold text-cafe group-hover:text-rosaantigo transition-colors">Aula básica e simples de crase</h4>
+                <p class="text-sm text-cafesuave mt-1">por <strong class="text-cafe">Toda Matéria</strong></p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-douradofosco/15 flex items-center justify-between text-xs font-semibold text-rosaantigo">
+                <span>assistir no YouTube</span>
+                <span class="group-hover:translate-x-1 transition-transform">↗</span>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Trilha 2 -->
+        <div>
+          <div class="flex items-center gap-2.5 mb-4">
+            <span class="w-8 h-8 rounded-xl bg-blush/80 text-cafe flex items-center justify-center text-base">🆘</span>
+            <h3 class="font-display text-2xl sm:text-3xl font-bold text-cafe">Não sei nada de nada, me ajuda!</h3>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <a href="https://youtu.be/rGtUDACX2Yo?si=n_rDQDPTvw2rbLU-" target="_blank" rel="noopener noreferrer" class="group bg-white/85 hover:bg-white rounded-2xl p-5 border border-douradofosco/30 hover:border-rosaantigo shadow-card transition-all flex flex-col justify-between">
+              <div>
+                <span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blush/60 text-cafe mb-3">Começando do Zero</span>
+                <h4 class="font-display text-xl font-bold text-cafe group-hover:text-rosaantigo transition-colors">Modelo base para entender estrutura</h4>
+                <p class="text-sm text-cafesuave mt-1">pela <strong class="text-cafe">Sarah (Método Questiona)</strong></p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-douradofosco/15 flex items-center justify-between text-xs font-semibold text-rosaantigo">
+                <span>assistir no YouTube</span>
+                <span class="group-hover:translate-x-1 transition-transform">↗</span>
+              </div>
+            </a>
+
+            <a href="https://youtu.be/g3D4sWMvydc?si=2TVhSJ8guPBuMyFv" target="_blank" rel="noopener noreferrer" class="group bg-white/85 hover:bg-white rounded-2xl p-5 border border-douradofosco/30 hover:border-rosaantigo shadow-card transition-all flex flex-col justify-between">
+              <div>
+                <span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blush/60 text-cafe mb-3">Passo a Passo</span>
+                <h4 class="font-display text-xl font-bold text-cafe group-hover:text-rosaantigo transition-colors">Redação por partes</h4>
+                <p class="text-sm text-cafesuave mt-1">por <strong class="text-cafe">Luma e Ponto</strong></p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-douradofosco/15 flex items-center justify-between text-xs font-semibold text-rosaantigo">
+                <span>assistir no YouTube</span>
+                <span class="group-hover:translate-x-1 transition-transform">↗</span>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Trilha 3 -->
+        <div>
+          <div class="flex items-center gap-2.5 mb-4">
+            <span class="w-8 h-8 rounded-xl bg-verdementa/80 text-cafe flex items-center justify-center text-base">🎯</span>
+            <h3 class="font-display text-2xl sm:text-3xl font-bold text-cafe">Para quem ainda se assusta com temas diferentes</h3>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <a href="https://youtu.be/wx183DAsnmA?si=QmnOImOuVPA9zEE-" target="_blank" rel="noopener noreferrer" class="group bg-white/85 hover:bg-white rounded-2xl p-5 border border-douradofosco/30 hover:border-rosaantigo shadow-card transition-all flex flex-col justify-between">
+              <div>
+                <span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold bg-verdementa/70 text-cafe mb-3">C2 • Recorte Temático</span>
+                <h4 class="font-display text-xl font-bold text-cafe group-hover:text-rosaantigo transition-colors">Como interpretar o tema</h4>
+                <p class="text-sm text-cafesuave mt-1">por <strong class="text-cafe">Fernanda Pessoa</strong></p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-douradofosco/15 flex items-center justify-between text-xs font-semibold text-rosaantigo">
+                <span>assistir no YouTube</span>
+                <span class="group-hover:translate-x-1 transition-transform">↗</span>
+              </div>
+            </a>
+
+            <a href="https://youtu.be/SYPQKWEHSZY?si=PGqpnNa994lAqlHh" target="_blank" rel="noopener noreferrer" class="group bg-white/85 hover:bg-white rounded-2xl p-5 border border-douradofosco/30 hover:border-rosaantigo shadow-card transition-all flex flex-col justify-between">
+              <div>
+                <span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold bg-verdementa/70 text-cafe mb-3">C2 • Desbloqueio</span>
+                <h4 class="font-display text-xl font-bold text-cafe group-hover:text-rosaantigo transition-colors">Como entender o tema (para quem se assusta com temas diferentes)</h4>
+                <p class="text-sm text-cafesuave mt-1">por <strong class="text-cafe">Luma e Ponto</strong></p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-douradofosco/15 flex items-center justify-between text-xs font-semibold text-rosaantigo">
+                <span>assistir no YouTube</span>
+                <span class="group-hover:translate-x-1 transition-transform">↗</span>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Trilha 4 -->
+        <div>
+          <div class="flex items-center gap-2.5 mb-4">
+            <span class="w-8 h-8 rounded-xl bg-blush/80 text-cafe flex items-center justify-center text-base">🧠</span>
+            <h3 class="font-display text-2xl sm:text-3xl font-bold text-cafe">Caminhos para vencer a C3 (no glue no borax)</h3>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <a href="https://youtu.be/J2jDyc9rUZ4?si=u1OBydQXWzcPYwU5" target="_blank" rel="noopener noreferrer" class="group bg-white/85 hover:bg-white rounded-2xl p-5 border border-douradofosco/30 hover:border-rosaantigo shadow-card transition-all flex flex-col justify-between">
+              <div>
+                <span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blush/60 text-cafe mb-3">C3 • Argumentação</span>
+                <h4 class="font-display text-xl font-bold text-cafe group-hover:text-rosaantigo transition-colors">Estrutura base de desenvolvimento</h4>
+                <p class="text-sm text-cafesuave mt-1">por <strong class="text-cafe">Milla Borges</strong></p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-douradofosco/15 flex items-center justify-between text-xs font-semibold text-rosaantigo">
+                <span>assistir no YouTube</span>
+                <span class="group-hover:translate-x-1 transition-transform">↗</span>
+              </div>
+            </a>
+
+            <a href="https://youtu.be/MR8kd4xgEWk?si=PokPDJ-Ks67XqeAf" target="_blank" rel="noopener noreferrer" class="group bg-white/85 hover:bg-white rounded-2xl p-5 border border-douradofosco/30 hover:border-rosaantigo shadow-card transition-all flex flex-col justify-between">
+              <div>
+                <span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold bg-douradofosco/25 text-cafe mb-3">✨ O Ouro da C3</span>
+                <h4 class="font-display text-xl font-bold text-cafe group-hover:text-rosaantigo transition-colors">Projeto de texto</h4>
+                <p class="text-sm text-cafesuave mt-1">por <strong class="text-cafe">Luma e Ponto</strong></p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-douradofosco/15 flex items-center justify-between text-xs font-semibold text-rosaantigo">
+                <span>assistir no YouTube</span>
+                <span class="group-hover:translate-x-1 transition-transform">↗</span>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Trilha 5 -->
+        <div>
+          <div class="flex items-center gap-2.5 mb-4">
+            <span class="w-8 h-8 rounded-xl bg-verdementa/80 text-cafe flex items-center justify-center text-base">📚</span>
+            <h3 class="font-display text-2xl sm:text-3xl font-bold text-cafe">Mas e os repertórios?</h3>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+            <a href="https://youtu.be/Gxce39TD7uM?si=TdSf45njgVeX-9sV" target="_blank" rel="noopener noreferrer" class="group bg-white/85 hover:bg-white rounded-2xl p-5 border border-douradofosco/30 hover:border-rosaantigo shadow-card transition-all flex flex-col justify-between">
+              <div>
+                <span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold bg-verdementa/70 text-cafe mb-3">Eixos mais densos</span>
+                <h4 class="font-display text-xl font-bold text-cafe group-hover:text-rosaantigo transition-colors">Eixo Educação</h4>
+                <p class="text-sm text-cafesuave mt-1">por <strong class="text-cafe">Milla Borges</strong></p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-douradofosco/15 flex items-center justify-between text-xs font-semibold text-rosaantigo">
+                <span>assistir no YouTube</span>
+                <span class="group-hover:translate-x-1 transition-transform">↗</span>
+              </div>
+            </a>
+
+            <a href="https://youtu.be/ctc2sr-h0nw?si=fwPBq73H7MXAg9dq" target="_blank" rel="noopener noreferrer" class="group bg-white/85 hover:bg-white rounded-2xl p-5 border border-douradofosco/30 hover:border-rosaantigo shadow-card transition-all flex flex-col justify-between">
+              <div>
+                <span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold bg-verdementa/70 text-cafe mb-3">Eixos mais densos</span>
+                <h4 class="font-display text-xl font-bold text-cafe group-hover:text-rosaantigo transition-colors">Eixo Meio Ambiente</h4>
+                <p class="text-sm text-cafesuave mt-1">por <strong class="text-cafe">Milla Borges</strong></p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-douradofosco/15 flex items-center justify-between text-xs font-semibold text-rosaantigo">
+                <span>assistir no YouTube</span>
+                <span class="group-hover:translate-x-1 transition-transform">↗</span>
+              </div>
+            </a>
+
+            <a href="https://youtu.be/ioiDrp1HGTg?si=tLa4XI8LUwnLiA6N" target="_blank" rel="noopener noreferrer" class="group bg-white/85 hover:bg-white rounded-2xl p-5 border border-douradofosco/30 hover:border-rosaantigo shadow-card transition-all flex flex-col justify-between">
+              <div>
+                <span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold bg-verdementa/70 text-cafe mb-3">Eixos mais densos</span>
+                <h4 class="font-display text-xl font-bold text-cafe group-hover:text-rosaantigo transition-colors">Eixo Tecnologia</h4>
+                <p class="text-sm text-cafesuave mt-1">por <strong class="text-cafe">Milla Borges</strong></p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-douradofosco/15 flex items-center justify-between text-xs font-semibold text-rosaantigo">
+                <span>assistir no YouTube</span>
+                <span class="group-hover:translate-x-1 transition-transform">↗</span>
+              </div>
+            </a>
+
+            <a href="https://youtu.be/5dnY-7uws6w?si=edQa9GMKTLYiaV0b" target="_blank" rel="noopener noreferrer" class="group bg-white/85 hover:bg-white rounded-2xl p-5 border border-douradofosco/30 hover:border-rosaantigo shadow-card transition-all flex flex-col justify-between">
+              <div>
+                <span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blush/60 text-cafe mb-3">Panorama Geral</span>
+                <h4 class="font-display text-xl font-bold text-cafe group-hover:text-rosaantigo transition-colors">Repertórios por eixo</h4>
+                <p class="text-sm text-cafesuave mt-1">por <strong class="text-cafe">Luma e Ponto</strong></p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-douradofosco/15 flex items-center justify-between text-xs font-semibold text-rosaantigo">
+                <span>assistir no YouTube</span>
+                <span class="group-hover:translate-x-1 transition-transform">↗</span>
+              </div>
+            </a>
+          </div>
+
+          <!-- Card especial Instagram Milla Borges -->
+          <a href="https://www.instagram.com/profmillaborges?knvt=d2U2eDluMGh2ZjFk" target="_blank" rel="noopener noreferrer" class="group block bg-gradient-to-r from-blush/60 to-offwhite rounded-2xl p-5 border border-rosaantigo/40 hover:border-rosaantigo shadow-card transition-all">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div class="flex items-start sm:items-center gap-3.5">
+                <div class="w-11 h-11 rounded-2xl bg-rosaantigo text-offwhite flex items-center justify-center shrink-0 text-xl shadow-sm">
+                  📸
+                </div>
+                <div>
+                  <span class="text-xs font-bold uppercase tracking-wider text-rosaantigo">dica extra • @profmillaborges</span>
+                  <h4 class="font-display text-xl font-bold text-cafe">Siga o Instagram da Milla Borges</h4>
+                  <p class="text-sm text-cafesuave">Ela posta conteúdos frequentes sobre repertórios e aplicações de todos os nichos imagináveis!</p>
+                </div>
+              </div>
+              <span class="self-start sm:self-center shrink-0 px-4 py-2 rounded-xl bg-white text-cafe group-hover:bg-rosaantigo group-hover:text-offwhite text-xs font-semibold border border-rosaantigo/30 transition-colors">
+                abrir perfil ↗
+              </span>
+            </div>
+          </a>
+        </div>
+
+        <!-- Trilha 6 -->
+        <div>
+          <div class="flex items-center gap-2.5 mb-4">
+            <span class="w-8 h-8 rounded-xl bg-douradofosco/25 text-cafe flex items-center justify-center text-base">🛠️</span>
+            <h3 class="font-display text-2xl sm:text-3xl font-bold text-cafe">Mas e a conclusão?</h3>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <a href="https://youtu.be/LcTBcoKjk7U?si=85nI79IBTmH2UNAm" target="_blank" rel="noopener noreferrer" class="group bg-white/85 hover:bg-white rounded-2xl p-5 border border-douradofosco/30 hover:border-rosaantigo shadow-card transition-all flex flex-col justify-between">
+              <div>
+                <span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold bg-douradofosco/20 text-cafe mb-3">C5 • Proposta</span>
+                <h4 class="font-display text-xl font-bold text-cafe group-hover:text-rosaantigo transition-colors">Estrutura da conclusão</h4>
+                <p class="text-sm text-cafesuave mt-1">por <strong class="text-cafe">Professor Noslen</strong></p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-douradofosco/15 flex items-center justify-between text-xs font-semibold text-rosaantigo">
+                <span>assistir no YouTube</span>
+                <span class="group-hover:translate-x-1 transition-transform">↗</span>
+              </div>
+            </a>
+
+            <a href="https://youtu.be/w7GECDz8PPo?si=WpvUkhwipmF_lLyE" target="_blank" rel="noopener noreferrer" class="group bg-white/85 hover:bg-white rounded-2xl p-5 border border-douradofosco/30 hover:border-rosaantigo shadow-card transition-all flex flex-col justify-between">
+              <div>
+                <span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold bg-douradofosco/20 text-cafe mb-3">C5 • Completo</span>
+                <h4 class="font-display text-xl font-bold text-cafe group-hover:text-rosaantigo transition-colors">Tudo sobre a conclusão</h4>
+                <p class="text-sm text-cafesuave mt-1">por <strong class="text-cafe">Luma e Ponto</strong></p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-douradofosco/15 flex items-center justify-between text-xs font-semibold text-rosaantigo">
+                <span>assistir no YouTube</span>
+                <span class="group-hover:translate-x-1 transition-transform">↗</span>
+              </div>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- ABA 3: CORREÇÃO                                                       -->
+    <!-- ===================================================================== -->
+    <section id="tab-correcao" class="tab-panel hidden space-y-8">
+      <div class="max-w-3xl">
+        <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-blush/70 text-cafe mb-2">
+          onde corrigir seus textos
+        </span>
+        <h2 class="font-display text-3xl sm:text-4xl font-bold text-cafe">
+          Ferramentas para Correção de Redação
+        </h2>
+        <p class="text-cafesuave mt-2 leading-relaxed">
+          Duas alternativas práticas que ajudam a identificar pontos de melhoria por competência sem gastar muito (ou de graça).
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <!-- Opção 1: Site Redaciona -->
+        <div class="lg:col-span-5 bg-white/85 rounded-3xl p-6 sm:p-7 border border-rosaantigo/40 shadow-card relative overflow-hidden">
+          <div class="washi-tape w-24 h-5 absolute -top-1.5 right-6 rotate-2 rounded-sm"></div>
+          <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-blush/65 text-cafe mb-3">
+            🌐 opção 1 • site
+          </span>
+          <h3 class="font-display text-2xl sm:text-3xl font-bold text-cafe mb-3">
+            Plataforma Redaciona
+          </h3>
+          <div class="space-y-3 text-sm sm:text-base text-cafesuave leading-relaxed">
+            <p>
+              Mais uma vez, a correção não é feita por mim, mas não podia deixar de indicar um site de correção muito bom: o <strong class="text-cafe">Redaciona</strong>!
+            </p>
+            <p>
+              Ele tem a opção paga, mas não se preocupem: apresenta uma <strong class="text-cafe">função gratuita</strong> que é tão boa quanto — plataforma extremamente completa e, se tiver condição, acho que vale a pena assinar.
+            </p>
+            <p>
+              É só criar sua conta gratuita e enviar a redação. Não sou patrocinada (inclusive meu sonho 😅), mas a plataforma mesmo gratuita é bem dedutiva e completa!
+            </p>
+          </div>
+
+          <a href="https://redaciona.com/app/redacoes" target="_blank" rel="noopener noreferrer" class="mt-6 w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-2xl bg-rosaantigo hover:bg-rosaantigo/90 text-offwhite font-semibold text-sm shadow-sm transition-all">
+            <span>Acessar o Redaciona</span>
+            <span>↗</span>
+          </a>
+        </div>
+
+        <!-- Opção 2: App Gemini Notebook -->
+        <div class="lg:col-span-7 bg-white/85 rounded-3xl p-6 sm:p-7 border border-verdesalvia/45 shadow-card relative">
+          <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-verdementa/75 text-cafe mb-3">
+            📱 opção 2 • caderno de estudos guiado
+          </span>
+          <h3 class="font-display text-2xl sm:text-3xl font-bold text-cafe mb-2">
+            Gemini Notebook para Redações
+          </h3>
+          <p class="text-sm sm:text-base text-cafesuave leading-relaxed mb-5">
+            No <strong class="text-cafe">Gemini Notebook</strong>, você pode criar um caderno dedicado, adicionar sua redação como fonte (foto, PDF ou texto) e configurar regras fixas para receber feedback pedagógico.
+          </p>
+
+          <div class="space-y-4">
+            <!-- Passo 1 -->
+            <div class="p-4 rounded-2xl bg-offwhite border border-douradofosco/30 flex gap-3.5">
+              <span class="w-7 h-7 rounded-full bg-verdesalvia text-offwhite font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">1</span>
+              <div>
+                <h4 class="font-bold text-cafe text-sm sm:text-base">Crie um notebook só para redações</h4>
+                <p class="text-xs sm:text-sm text-cafesuave mt-1">
+                  Acesse <span class="px-2 py-0.5 rounded bg-white border border-douradofosco/30 text-cafe font-medium">Menu → Notebooks → Novo notebook</span> e dê um nome como <strong class="text-cafe">Correção de Redações — ENEM</strong>.
+                </p>
+              </div>
+            </div>
+
+            <!-- Passo 2 -->
+            <div class="p-4 rounded-2xl bg-offwhite border border-douradofosco/30 flex gap-3.5">
+              <span class="w-7 h-7 rounded-full bg-verdesalvia text-offwhite font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">2</span>
+              <div>
+                <h4 class="font-bold text-cafe text-sm sm:text-base">Coloque a sua redação como fonte</h4>
+                <p class="text-xs sm:text-sm text-cafesuave mt-1">
+                  Adicione uma foto, PDF ou texto copiado como fonte. <strong>Dica:</strong> se sua redação estiver manuscrita, mande uma foto bem nítida da folha inteira (se tiver duas páginas, envie as duas).
+                </p>
+              </div>
+            </div>
+
+            <!--Passo 3 -->
+            <div class="p-4 rounded-2xl bg-blush/35 border border-rosaantigo/35 flex gap-3.5">
+              <span class="w-7 h-7 rounded-full bg-rosaantigo text-offwhite font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">3</span>
+              <div class="w-full">
+                <h4 class="font-bold text-cafe text-sm sm:text-base">Configure uma regra de correção permanente</h4>
+                <p class="text-xs sm:text-sm text-cafesuave mt-1 mb-3">
+                  Em vez de pedir apenas <em>“Corrija minha redação”</em>, salve estas instruções permanentes no notebook para não precisar repetir toda vez:
+                </p>
+
+                <div class="relative bg-white/95 rounded-xl p-3.5 border border-douradofosco/40">
+                  <p id="promptToCopy" class="text-xs sm:text-sm text-cafe leading-relaxed pr-2">
+                    Sempre corrija minhas redações seguindo a matriz oficial do ENEM. Priorize explicações pedagógicas. Não elogie genericamente. Não invente erros. Diferencie erro que reduz pontuação de sugestão de aprimoramento. Sempre explique o raciocínio por trás da avaliação e preserve minha autoria ao sugerir melhorias.
+                  </p>
+                  <div class="mt-3 pt-2.5 border-t border-douradofosco/20 flex items-center justify-between">
+                    <span id="copyFeedback" class="text-xs font-medium text-verdesalvia"></span>
+                    <button onclick="copyCorrectionPrompt()" class="px-3.5 py-1.5 rounded-lg bg-rosaantigo hover:bg-rosaantigo/90 text-offwhite text-xs font-semibold transition-colors cursor-pointer flex items-center gap-1.5">
+                      <span>📋</span>
+                      <span>copiar instrução</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- ABA 4: REPERTÓRIOS                                                    -->
+    <!-- ===================================================================== -->
+    <section id="tab-repertorios" class="tab-panel hidden space-y-7">
+
+      <!-- Card Destaque Twitter / X da Isa -->
+      <div class="bg-gradient-to-r from-blush/60 via-offwhite to-verdementa/50 rounded-3xl p-6 sm:p-7 border border-douradofosco/40 shadow-card">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <span class="inline-block px-3 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider bg-white/85 text-rosaantigo mb-2">
+              ≈ isa study no study
+            </span>
+            <h2 class="font-display text-2xl sm:text-3xl font-bold text-cafe">
+              Slide Autoral com os Repertórios Favoritos da Isa
+            </h2>
+            <p class="text-sm sm:text-base text-cafesuave mt-1">
+              No meu Twitter/X, postei um slide autoral com a indicação dos repertórios que eu pessoalmente mais gosto de usar nas minhas redações.
+            </p>
+          </div>
+          <a href="https://x.com/isstudy_/status/2118436289242353795?a=LCVlvCe79QWsXOa5b1Q&s=61" target="_blank" rel="noopener noreferrer" class="shrink-0 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-rosaantigo hover:bg-rosaantigo/90 text-offwhite font-semibold text-sm shadow-sm transition-all">
+            <span>acessar slide autoral</span>
+            <span>↗</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Cabeçalho + Barra de Filtros -->
+      <div class="space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+          <div>
+            <h3 class="font-display text-3xl font-bold text-cafe">Repertórios por Eixo Temático</h3>
+            <p class="text-sm text-cafesuave mt-1">
+              Obras, pensadores e conceitos menos óbvios que rendem argumentação profunda sem parecer repertório decorado.
+            </p>
+          </div>
+          <!-- Busca rápida -->
+          <div class="relative w-full sm:w-64">
+            <input id="repertorioSearch" type="text" oninput="filterRepertorios()" placeholder="Buscar autor, obra ou tema..." class="w-full pl-9 pr-3.5 py-2 rounded-xl bg-white border border-douradofosco/35 text-sm text-cafe placeholder:text-cafesuave/60 focus:outline-none focus:border-rosaantigo" />
+            <span class="absolute left-3 top-2.5 text-cafesuave text-sm">🔍</span>
+          </div>
+        </div>
+
+        <!-- Botões de Filtro de Eixo + Kit Definitivo -->
+        <div class="flex flex-wrap gap-2" id="eixoFilters">
+          <button onclick="setEixoFilter('todos')" data-eixo="todos" class="eixo-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-rosaantigo text-offwhite shadow-sm transition-all cursor-pointer">
+            Todos (30)
+          </button>
+          <button onclick="setEixoFilter('kit')" data-eixo="kit" class="eixo-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-douradofosco/20 hover:bg-douradofosco/35 text-cafe border border-douradofosco/50 transition-all cursor-pointer">
+            🧠 Kit Definitivo (Top 15)
+          </button>
+          <button onclick="setEixoFilter('ambiente')" data-eixo="ambiente" class="eixo-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium bg-white hover:bg-verdementa/40 text-cafe border border-douradofosco/30 transition-all cursor-pointer">
+            🌱 Meio Ambiente
+          </button>
+          <button onclick="setEixoFilter('tecnologia')" data-eixo="tecnologia" class="eixo-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium bg-white hover:bg-verdementa/40 text-cafe border border-douradofosco/30 transition-all cursor-pointer">
+            💻 Tecnologia
+          </button>
+          <button onclick="setEixoFilter('minorias')" data-eixo="minorias" class="eixo-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium bg-white hover:bg-verdementa/40 text-cafe border border-douradofosco/30 transition-all cursor-pointer">
+            🏳️‍🌈 Minorias / Grupos Vulneráveis
+          </button>
+          <button onclick="setEixoFilter('saude')" data-eixo="saude" class="eixo-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium bg-white hover:bg-verdementa/40 text-cafe border border-douradofosco/30 transition-all cursor-pointer">
+            🏥 Saúde
+          </button>
+          <button onclick="setEixoFilter('cultura')" data-eixo="cultura" class="eixo-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium bg-white hover:bg-verdementa/40 text-cafe border border-douradofosco/30 transition-all cursor-pointer">
+            🎭 Cultura
+          </button>
+        </div>
+      </div>
+
+      <!-- Container Dinâmico dos Repertórios / Kit Definitivo -->
+      <div id="repertoriosContainer" class="space-y-6"></div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- ABA 5: REGISTRO (DIÁRIO DE EVOLUÇÃO)                                  -->
+    <!-- ===================================================================== -->
+    <section id="tab-registro" class="tab-panel hidden space-y-7">
+
+      <!-- Dica da Isa -->
+      <div class="bg-verdementa/45 rounded-3xl p-6 sm:p-7 border border-verdesalvia/45 shadow-card relative">
+        <div class="washi-tape w-24 h-5 absolute -top-2 left-8 -rotate-2 rounded-sm"></div>
+        <div class="flex items-start gap-3.5">
+          <span class="text-2xl sm:text-3xl shrink-0">✨</span>
+          <div>
+            <span class="text-xs font-bold uppercase tracking-widest text-verdesalvia block mb-1">dica da isa</span>
+            <p class="font-display text-xl sm:text-2xl font-bold text-cafe leading-snug">
+              “façam uma redação por semana!!! a longo prazo, traz um retorno enorme, não desistam, a recompensa vale mais que o sacrifício.”
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Painel de Métricas + Botão [+] -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white/85 rounded-3xl p-5 sm:p-6 border border-douradofosco/30 shadow-card">
+        <div class="grid grid-cols-3 gap-3 sm:gap-6 flex-1">
+          <div class="p-3 rounded-2xl bg-offwhite border border-douradofosco/25 text-center sm:text-left">
+            <span class="text-xs text-cafesuave block">Redações feitas</span>
+            <span id="statTotal" class="font-display text-2xl sm:text-3xl font-bold text-cafe">0</span>
+          </div>
+          <div class="p-3 rounded-2xl bg-offwhite border border-douradofosco/25 text-center sm:text-left">
+            <span class="text-xs text-cafesuave block">Média geral</span>
+            <span id="statMedia" class="font-display text-2xl sm:text-3xl font-bold text-rosaantigo">—</span>
+          </div>
+          <div class="p-3 rounded-2xl bg-offwhite border border-douradofosco/25 text-center sm:text-left">
+            <span class="text-xs text-cafesuave block">Maior nota</span>
+            <span id="statMax" class="font-display text-2xl sm:text-3xl font-bold text-verdesalvia">—</span>
+          </div>
+        </div>
+
+        <!-- Botão [+] para registrar progresso -->
+        <button onclick="toggleRegistroForm(true)" class="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-2xl bg-rosaantigo hover:bg-rosaantigo/90 text-offwhite font-semibold text-sm shadow-sm transition-all cursor-pointer shrink-0">
+          <span class="w-6 h-6 rounded-lg bg-offwhite/25 flex items-center justify-center text-lg font-bold leading-none">+</span>
+          <span>Registrar nova redação</span>
+        </button>
+      </div>
+
+      <!-- Formulário de Registro (oculto inicialmente, abre ao clicar no +) -->
+      <div id="registroFormCard" class="hidden bg-white rounded-3xl p-6 sm:p-7 border-2 border-rosaantigo/45 shadow-paper">
+        <div class="flex items-center justify-between mb-4">
+          <h3 id="formTitle" class="font-display text-2xl font-bold text-cafe">Nova ficha de redação</h3>
+          <button onclick="toggleRegistroForm(false)" class="w-8 h-8 rounded-full bg-offwhite hover:bg-blush text-cafe flex items-center justify-center cursor-pointer" aria-label="Fechar formulário">✕</button>
+        </div>
+
+        <form id="registroForm" onsubmit="saveRegistro(event)" class="space-y-4">
+          <input type="hidden" id="editRegistroId" value="" />
+
+          <div>
+            <label for="regTema" class="block text-xs font-bold uppercase tracking-wider text-cafesuave mb-1.5">Tema da redação *</label>
+            <input id="regTema" type="text" required placeholder="Ex: Desafios para a valorização da cultura indígena no Brasil" class="w-full px-4 py-2.5 rounded-xl bg-offwhite border border-douradofosco/40 text-sm text-cafe focus:outline-none focus:border-rosaantigo" />
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="regNota" class="block text-xs font-bold uppercase tracking-wider text-cafesuave mb-1.5">Nota obtida (0 a 1000) *</label>
+              <input id="regNota" type="number" min="0" max="1000" step="20" required placeholder="Ex: 920" class="w-full px-4 py-2.5 rounded-xl bg-offwhite border border-douradofosco/40 text-sm text-cafe focus:outline-none focus:border-rosaantigo" />
+            </div>
+            <div>
+              <label for="regData" class="block text-xs font-bold uppercase tracking-wider text-cafesuave mb-1.5">Data *</label>
+              <input id="regData" type="date" required class="w-full px-4 py-2.5 rounded-xl bg-offwhite border border-douradofosco/40 text-sm text-cafe focus:outline-none focus:border-rosaantigo" />
+            </div>
+          </div>
+
+          <div>
+            <label for="regErros" class="block text-xs font-bold uppercase tracking-wider text-cafesuave mb-1.5">Principais erros &amp; pontos de atenção *</label>
+            <textarea id="regErros" rows="3" required placeholder="Ex: C1: revisar uso de crase; C2: articular melhor o repertório do D2 com o tema; C5: faltou detalhar o agente." class="w-full px-4 py-2.5 rounded-xl bg-offwhite border border-douradofosco/40 text-sm text-cafe focus:outline-none focus:border-rosaantigo"></textarea>
+          </div>
+
+          <div class="flex items-center justify-end gap-3 pt-2">
+            <button type="button" onclick="toggleRegistroForm(false)" class="px-4 py-2.5 rounded-xl bg-offwhite hover:bg-blush/50 text-cafe text-sm font-medium cursor-pointer">
+              Cancelar
+            </button>
+            <button type="submit" class="px-6 py-2.5 rounded-xl bg-rosaantigo hover:bg-rosaantigo/90 text-offwhite text-sm font-semibold shadow-sm cursor-pointer">
+              Salvar no meu caderno
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Lista de Registros Salvos -->
+      <div id="registrosList" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+    </section>
+
+  </main>
+
+  <!-- ==================== RODAPÉ ==================== -->
+  <footer class="mt-12 border-t border-douradofosco/25 bg-white/60 py-6 px-4 text-center">
+    <p class="font-display text-lg font-bold text-cafe">
+      café<span class="italic text-douradofosco">&amp;</span>redação <span class="font-sans text-xs font-medium text-cafesuave">by <span class="text-rosaantigo font-semibold">isstudy_</span></span>
+    </p>
+    <p class="text-xs text-cafesuave mt-1">feito de vestibulanda para vestibulandos • bons estudos ☕</p>
+  </footer>
+
+  <!-- ==================== SCRIPTS ==================== -->
+  <script>
+    // ---------------------------------------------------------
+    // 1. CONTROLE DO MODAL INICIAL ("NOTA DE CADERNO" DA ISA)
+    // ---------------------------------------------------------
+    function closeIsaNote() {
+      const modal = document.getElementById('isaNoteModal');
+      modal.classList.add('opacity-0');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 250);
+    }
+
+    function openIsaNote() {
+      const modal = document.getElementById('isaNoteModal');
+      modal.classList.remove('hidden');
+      requestAnimationFrame(() => {
+        modal.classList.remove('opacity-0');
+      });
+    }
+
+    // ---------------------------------------------------------
+    // 2. NAVEGAÇÃO ENTRE ABAS
+    // ---------------------------------------------------------
+    function switchTab(tabName) {
+      // Esconde todos os painéis
+      document.querySelectorAll('.tab-panel').forEach(panel => {
+        panel.classList.add('hidden');
+      });
+
+      // Mostra o painel selecionado
+      const target = document.getElementById(`tab-${tabName}`);
+      if (target) {
+        target.classList.remove('hidden');
+      }
+
+      // Atualiza estilo dos botões de aba
+      document.querySelectorAll('.nav-tab').forEach(btn => {
+        const isCurrent = btn.getAttribute('data-tab') === tabName;
+        if (isCurrent) {
+          btn.className = 'nav-tab active-tab shrink-0 px-4 py-2 rounded-xl text-sm font-semibold transition-all cursor-pointer flex items-center gap-2 bg-rosaantigo text-offwhite shadow-sm';
+        } else {
+          btn.className = 'nav-tab shrink-0 px-4 py-2 rounded-xl text-sm font-medium transition-all cursor-pointer flex items-center gap-2 bg-offwhite hover:bg-blush/45 text-cafe border border-douradofosco/30';
+        }
+      });
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ---------------------------------------------------------
+    // 3. COPIAR INSTRUÇÃO DE CORREÇÃO (ABA CORREÇÃO)
+    // ---------------------------------------------------------
+    function copyCorrectionPrompt() {
+      const text = document.getElementById('promptToCopy').innerText.trim();
+      const feedback = document.getElementById('copyFeedback');
+
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+
+      try {
+        document.execCommand('copy');
+        feedback.textContent = '✓ instrução copiada! agora é só colar no seu notebook.';
+        setTimeout(() => { feedback.textContent = ''; }, 3500);
+      } catch (err) {
+        feedback.textContent = 'Selecione o texto acima para copiar.';
+      }
+      document.body.removeChild(textarea);
+    }
+
+    // ---------------------------------------------------------
+    // 4. DADOS E RENDERIZAÇÃO DOS REPERTÓRIOS (ABA REPERTÓRIOS)
+    // ---------------------------------------------------------
+    const repertoriosData = [
+      // 🌱 MEIO AMBIENTE
+      {
+        eixo: 'ambiente',
+        eixoLabel: '🌱 Meio Ambiente',
+        titulo: 'A Queda do Céu — Davi Kopenawa e Bruce Albert',
+        tipo: '📚 Livro',
+        kitTop: 1,
+        sintese: 'A obra apresenta a visão de Davi Kopenawa, liderança Yanomami, sobre a relação entre os povos indígenas e a natureza. A exploração predatória dos recursos naturais é apresentada como consequência de uma visão que separa o ser humano do ambiente.',
+        comoEncaixar: 'Ótimo para temas sobre desmatamento, mineração, povos tradicionais, exploração ambiental, mudanças climáticas e crise ecológica.',
+        ideiaChave: 'A crise ambiental também nasce de uma determinada forma de enxergar a natureza: como recurso a ser explorado.'
+      },
+      {
+        eixo: 'ambiente',
+        eixoLabel: '🌱 Meio Ambiente',
+        titulo: 'O Lorax — Dr. Seuss',
+        tipo: '🎬 Filme / Animação',
+        kitTop: null,
+        sintese: 'A história mostra uma sociedade que transforma a natureza em mercadoria e, movida pela exploração econômica, destrói progressivamente o próprio ambiente do qual depende.',
+        comoEncaixar: 'Funciona muito bem para consumismo, exploração de recursos naturais, desmatamento e conflito entre desenvolvimento econômico e preservação ambiental.',
+        ideiaChave: 'A busca ilimitada pelo lucro pode transformar a própria natureza em vítima da atividade econômica.'
+      },
+      {
+        eixo: 'ambiente',
+        eixoLabel: '🌱 Meio Ambiente',
+        titulo: 'Ailton Krenak — “Ideias para Adiar o Fim do Mundo”',
+        tipo: '📚 Livro / Pensador',
+        kitTop: 2,
+        sintese: 'Krenak critica a ideia de que humanidade e natureza sejam elementos separados. Para ele, tratar a natureza como algo externo ao ser humano contribui para a exploração e para a crise ambiental.',
+        comoEncaixar: 'Excelente para mudanças climáticas, crise ambiental, povos indígenas e relação sociedade-natureza.',
+        ideiaChave: 'A destruição ambiental é também resultado de uma visão de mundo que coloca o ser humano acima da natureza.'
+      },
+      {
+        eixo: 'ambiente',
+        eixoLabel: '🌱 Meio Ambiente',
+        titulo: 'Racismo ambiental',
+        tipo: '🧠 Conceito sociológico',
+        kitTop: 3,
+        sintese: 'Refere-se à distribuição desigual dos impactos ambientais: populações socialmente vulneráveis tendem a estar mais expostas à poluição, desastres, falta de saneamento e degradação ambiental.',
+        comoEncaixar: 'Perfeito para enchentes, saneamento, mudanças climáticas, desastres ambientais e desigualdade social.',
+        ideiaChave: 'Os danos ambientais não atingem todos da mesma maneira.'
+      },
+      {
+        eixo: 'ambiente',
+        eixoLabel: '🌱 Meio Ambiente',
+        titulo: 'Sociedade de Consumo — Jean Baudrillard',
+        tipo: '📚 Livro / Sociólogo',
+        kitTop: null,
+        sintese: 'Baudrillard analisa uma sociedade na qual consumir deixa de significar apenas adquirir aquilo de que se necessita e passa a estar relacionado a status, identidade e pertencimento.',
+        comoEncaixar: 'Use em consumismo, produção excessiva de resíduos, obsolescência e impactos ambientais.',
+        ideiaChave: 'Quando o consumo se torna mecanismo de construção da identidade, a necessidade de consumir tende a se reproduzir continuamente.'
+      },
+      {
+        eixo: 'ambiente',
+        eixoLabel: '🌱 Meio Ambiente',
+        titulo: 'Desastre de Mariana',
+        tipo: '🏛️ Acontecimento histórico',
+        kitTop: null,
+        sintese: 'O rompimento da barragem de Fundão, em 2015, provocou uma enorme destruição ambiental e social, evidenciando os riscos associados à exploração mineral e à fiscalização insuficiente.',
+        comoEncaixar: 'Muito bom para mineração, fiscalização ambiental, responsabilidade empresarial e negligência estatal.',
+        ideiaChave: null
+      },
+
+      // 💻 TECNOLOGIA
+      {
+        eixo: 'tecnologia',
+        eixoLabel: '💻 Tecnologia',
+        titulo: 'A Sociedade da Transparência — Byung-Chul Han',
+        tipo: '📚 Livro / Filósofo',
+        kitTop: 5,
+        sintese: 'Han discute uma sociedade em que a exposição constante e a necessidade de tornar tudo visível transformam a privacidade e as relações humanas.',
+        comoEncaixar: 'Excelente para redes sociais, exposição da vida privada, vigilância e cultura da exposição.',
+        ideiaChave: 'A tecnologia pode transformar a exposição em uma expectativa social, fazendo com que a privacidade pareça cada vez menos necessária.'
+      },
+      {
+        eixo: 'tecnologia',
+        eixoLabel: '💻 Tecnologia',
+        titulo: 'Black Mirror',
+        tipo: '📺 Série',
+        kitTop: null,
+        sintese: 'A série apresenta diferentes situações em que tecnologias aparentemente úteis acabam produzindo consequências sociais e psicológicas inesperadas.',
+        comoEncaixar: 'Serve para inteligência artificial, redes sociais, dependência tecnológica, vigilância, algoritmos e relações humanas. Dica: cite um episódio específico e explique o que acontece nele.',
+        ideiaChave: null
+      },
+      {
+        eixo: 'tecnologia',
+        eixoLabel: '💻 Tecnologia',
+        titulo: 'Capitalismo de Vigilância — Shoshana Zuboff',
+        tipo: '📚 Livro / Conceito',
+        kitTop: 4,
+        sintese: 'Zuboff analisa um modelo econômico baseado na coleta e utilização de dados comportamentais dos usuários para prever e influenciar comportamentos.',
+        comoEncaixar: 'Perfeito para privacidade, redes sociais, algoritmos, publicidade direcionada e uso de dados pessoais.',
+        ideiaChave: 'Dados pessoais podem deixar de ser apenas informações privadas e se transformar em matéria-prima econômica.'
+      },
+      {
+        eixo: 'tecnologia',
+        eixoLabel: '💻 Tecnologia',
+        titulo: 'Frankenstein — Mary Shelley',
+        tipo: '📚 Livro',
+        kitTop: 6,
+        sintese: 'Victor Frankenstein cria uma criatura por meio de seus conhecimentos científicos, mas abandona a responsabilidade pelas consequências de sua criação.',
+        comoEncaixar: 'Ótimo para inteligência artificial, limites éticos da ciência, responsabilidade tecnológica e inovação sem regulamentação.',
+        ideiaChave: 'Desenvolver uma tecnologia não significa necessariamente estar preparado para lidar com suas consequências.'
+      },
+      {
+        eixo: 'tecnologia',
+        eixoLabel: '💻 Tecnologia',
+        titulo: 'Panóptico — Michel Foucault',
+        tipo: '🧠 Filósofo',
+        kitTop: null,
+        sintese: 'Foucault utiliza o modelo do panóptico para explicar formas de vigilância nas quais os indivíduos passam a controlar o próprio comportamento porque sabem que podem estar sendo observados.',
+        comoEncaixar: 'Excelente para vigilância digital, reconhecimento facial, coleta de dados e privacidade.',
+        ideiaChave: null
+      },
+      {
+        eixo: 'tecnologia',
+        eixoLabel: '💻 Tecnologia',
+        titulo: 'O Dilema das Redes',
+        tipo: '🎬 Documentário',
+        kitTop: null,
+        sintese: 'O documentário discute como plataformas digitais utilizam mecanismos de personalização e engajamento para manter usuários conectados e influenciar seu comportamento.',
+        comoEncaixar: 'Muito bom para dependência digital, saúde mental, desinformação, algoritmos e polarização.',
+        ideiaChave: null
+      },
+
+      // 🏳️‍🌈 MINORIAS / GRUPOS VULNERÁVEIS
+      {
+        eixo: 'minorias',
+        eixoLabel: '🏳️‍🌈 Minorias / Grupos Vulneráveis',
+        titulo: 'Quarto de Despejo — Carolina Maria de Jesus',
+        tipo: '📚 Livro',
+        kitTop: 8,
+        sintese: 'Carolina Maria de Jesus registra seu cotidiano vivendo na favela do Canindé, revelando pobreza, fome, desigualdade e invisibilidade social.',
+        comoEncaixar: 'Serve para pobreza, desigualdade, fome, população periférica, exclusão social e invisibilidade de grupos vulneráveis.',
+        ideiaChave: 'A desigualdade não é apenas uma estatística; ela determina concretamente as condições de existência dos indivíduos.'
+      },
+      {
+        eixo: 'minorias',
+        eixoLabel: '🏳️‍🌈 Minorias / Grupos Vulneráveis',
+        titulo: 'Estigma — Erving Goffman',
+        tipo: '📚 Livro / Sociólogo',
+        kitTop: 7,
+        sintese: 'Goffman explica como determinadas características podem ser socialmente transformadas em marcas negativas, levando indivíduos a serem classificados e marginalizados.',
+        comoEncaixar: 'Excelente para preconceito, deficiência, doenças, saúde mental, população LGBTQIA+, pessoas em situação de rua e discriminação.',
+        ideiaChave: 'Muitas formas de exclusão não decorrem da característica em si, mas do significado negativo que a sociedade atribui a ela.'
+      },
+      {
+        eixo: 'minorias',
+        eixoLabel: '🏳️‍🌈 Minorias / Grupos Vulneráveis',
+        titulo: 'Aporofobia — Adela Cortina',
+        tipo: '🧠 Conceito filosófico',
+        kitTop: 9,
+        sintese: 'Cortina utiliza o termo aporofobia para definir a rejeição ou aversão aos pobres.',
+        comoEncaixar: 'Ótimo para população em situação de rua, desigualdade, pobreza, exclusão urbana e criminalização da pobreza.',
+        ideiaChave: 'Determinadas pessoas não são rejeitadas apenas por serem diferentes, mas por serem socialmente consideradas desprovidas de valor econômico.'
+      },
+      {
+        eixo: 'minorias',
+        eixoLabel: '🏳️‍🌈 Minorias / Grupos Vulneráveis',
+        titulo: 'Lélia Gonzalez',
+        tipo: '🧠 Pensadora brasileira',
+        kitTop: null,
+        sintese: 'Lélia Gonzalez analisou as relações entre racismo, sexismo e desigualdade social, destacando as experiências específicas das mulheres negras brasileiras.',
+        comoEncaixar: 'Excelente para racismo, desigualdade de gênero, mulheres negras, representatividade e interseccionalidade.',
+        ideiaChave: null
+      },
+      {
+        eixo: 'minorias',
+        eixoLabel: '🏳️‍🌈 Minorias / Grupos Vulneráveis',
+        titulo: 'Hoje Eu Quero Voltar Sozinho',
+        tipo: '🎬 Filme',
+        kitTop: null,
+        sintese: 'O filme acompanha Leonardo, um adolescente cego, e aborda sua autonomia, amizade, descobertas afetivas e relação com os colegas.',
+        comoEncaixar: 'Muito bom para capacitismo, inclusão, acessibilidade, autonomia das pessoas com deficiência e preconceito.',
+        ideiaChave: null
+      },
+      {
+        eixo: 'minorias',
+        eixoLabel: '🏳️‍🌈 Minorias / Grupos Vulneráveis',
+        titulo: 'Kimberlé Crenshaw — Interseccionalidade',
+        tipo: '🧠 Conceito',
+        kitTop: null,
+        sintese: 'Crenshaw demonstra que diferentes formas de opressão podem se sobrepor. Uma pessoa pode vivenciar simultaneamente desigualdades relacionadas a gênero, raça e classe.',
+        comoEncaixar: 'Excelente para temas envolvendo mulheres negras, pobreza, violência, acesso à educação, saúde e mercado de trabalho.',
+        ideiaChave: null
+      },
+
+      // 🏥 SAÚDE
+      {
+        eixo: 'saude',
+        eixoLabel: '🏥 Saúde',
+        titulo: 'O Alienista — Machado de Assis',
+        tipo: '📚 Livro',
+        kitTop: 10,
+        sintese: 'Simão Bacamarte cria uma instituição para estudar a loucura e começa a ampliar cada vez mais os critérios utilizados para definir quem é considerado mentalmente saudável ou doente.',
+        comoEncaixar: 'Muito bom para saúde mental, medicalização, estigmatização e definição social da normalidade.',
+        ideiaChave: 'A própria definição de normalidade pode ser influenciada pelas estruturas sociais e pelas instituições.'
+      },
+      {
+        eixo: 'saude',
+        eixoLabel: '🏥 Saúde',
+        titulo: 'Sociedade do Cansaço — Byung-Chul Han',
+        tipo: '📚 Livro / Filósofo',
+        kitTop: 11,
+        sintese: 'Han argumenta que a sociedade contemporânea estimula produtividade constante, desempenho e autoexigência, produzindo indivíduos exaustos.',
+        comoEncaixar: 'Perfeito para saúde mental, burnout, excesso de trabalho, hiperprodutividade, pressão acadêmica e ansiedade.',
+        ideiaChave: null
+      },
+      {
+        eixo: 'saude',
+        eixoLabel: '🏥 Saúde',
+        titulo: 'História da Loucura — Michel Foucault',
+        tipo: '📚 Livro / Filósofo',
+        kitTop: 12,
+        sintese: 'Foucault investiga como diferentes sociedades construíram historicamente a ideia de loucura e como pessoas consideradas “loucas” foram segregadas.',
+        comoEncaixar: 'Excelente para saúde mental, manicômios, estigma, exclusão e tratamento de transtornos psicológicos.',
+        ideiaChave: null
+      },
+      {
+        eixo: 'saude',
+        eixoLabel: '🏥 Saúde',
+        titulo: 'Bicho de Sete Cabeças',
+        tipo: '🎬 Filme',
+        kitTop: null,
+        sintese: 'O filme acompanha um jovem internado em uma instituição psiquiátrica e evidencia práticas violentas e desumanizantes presentes no modelo manicomial.',
+        comoEncaixar: 'Ótimo para saúde mental, reforma psiquiátrica, institucionalização e violação da dignidade.',
+        ideiaChave: null
+      },
+      {
+        eixo: 'saude',
+        eixoLabel: '🏥 Saúde',
+        titulo: 'Revolta da Vacina',
+        tipo: '🏛️ Acontecimento histórico',
+        kitTop: null,
+        sintese: 'Em 1904, a vacinação obrigatória contra a varíola provocou forte reação popular no Rio de Janeiro, em um contexto marcado por reformas urbanas autoritárias e falta de diálogo com a população.',
+        comoEncaixar: 'Interessante para vacinação, saúde pública, confiança nas instituições e comunicação científica.',
+        ideiaChave: null
+      },
+      {
+        eixo: 'saude',
+        eixoLabel: '🏥 Saúde',
+        titulo: 'Determinantes Sociais da Saúde',
+        tipo: '🧠 Conceito',
+        kitTop: null,
+        sintese: 'A saúde de uma população não depende apenas de atendimento médico. Condições como renda, moradia, alimentação, saneamento, educação e trabalho também influenciam a saúde.',
+        comoEncaixar: 'Perfeito para desigualdade no acesso à saúde, saneamento, fome, doenças e saúde pública.',
+        ideiaChave: null
+      },
+
+      // 🎭 CULTURA
+      {
+        eixo: 'cultura',
+        eixoLabel: '🎭 Cultura',
+        titulo: 'O Auto da Compadecida — Ariano Suassuna',
+        tipo: '🎬 Filme / Peça',
+        kitTop: 15,
+        sintese: 'A obra de Ariano Suassuna combina elementos da cultura popular nordestina, religiosidade, oralidade e crítica social.',
+        comoEncaixar: 'Excelente para valorização da cultura popular, identidade regional, patrimônio cultural e preconceito regional.',
+        ideiaChave: null
+      },
+      {
+        eixo: 'cultura',
+        eixoLabel: '🎭 Cultura',
+        titulo: 'Quarto de Despejo (produção literária periférica) — Carolina Maria de Jesus',
+        tipo: '📚 Livro',
+        kitTop: null,
+        sintese: 'Além de denunciar a desigualdade, a obra mostra como uma mulher negra e periférica transforma sua própria experiência em produção literária.',
+        comoEncaixar: 'Ótimo para democratização da produção cultural, representatividade, acesso à literatura e apagamento de vozes periféricas.',
+        ideiaChave: null
+      },
+      {
+        eixo: 'cultura',
+        eixoLabel: '🎭 Cultura',
+        titulo: 'Ailton Krenak (diversidade cultural)',
+        tipo: '🧠 Pensador indígena',
+        kitTop: null,
+        sintese: 'Krenak questiona a ideia de uma cultura brasileira homogênea e enfatiza a existência de diferentes formas de compreender território, natureza, memória e comunidade.',
+        comoEncaixar: 'Muito bom para culturas indígenas, diversidade cultural, apagamento cultural e identidade brasileira.',
+        ideiaChave: null
+      },
+      {
+        eixo: 'cultura',
+        eixoLabel: '🎭 Cultura',
+        titulo: 'Conceição Evaristo — Escrevivência',
+        tipo: '📚 Conceito literário',
+        kitTop: 13,
+        sintese: 'A ideia de escrevivência relaciona escrita, memória e experiência vivida, especialmente a partir das experiências de mulheres negras.',
+        comoEncaixar: 'Perfeita para representatividade, literatura periférica, vozes historicamente silenciadas e democratização cultural.',
+        ideiaChave: 'Permitir que grupos historicamente silenciados produzam e difundam suas próprias narrativas também é uma forma de combater o apagamento cultural.'
+      },
+      {
+        eixo: 'cultura',
+        eixoLabel: '🎭 Cultura',
+        titulo: 'Pierre Bourdieu — Capital cultural',
+        tipo: '🧠 Sociólogo',
+        kitTop: 14,
+        sintese: 'Bourdieu mostra que o acesso a conhecimentos, hábitos e bens culturais também é distribuído de maneira desigual entre as classes sociais.',
+        comoEncaixar: 'Excelente para acesso desigual à cultura, museus, livros, cinema, educação cultural e elitização cultural.',
+        ideiaChave: null
+      },
+      {
+        eixo: 'cultura',
+        eixoLabel: '🎭 Cultura',
+        titulo: 'Viva — A Vida é uma Festa (Coco)',
+        tipo: '🎬 Filme',
+        kitTop: null,
+        sintese: 'A animação trabalha memória familiar, tradição, música e identidade cultural, mostrando como as práticas culturais ajudam a preservar a memória coletiva.',
+        comoEncaixar: 'Funciona para patrimônio imaterial, preservação de tradições, memória cultural e transmissão entre gerações.',
+        ideiaChave: null
+      }
+    ];
+
+    let currentEixo = 'todos';
+
+    function setEixoFilter(eixo) {
+      currentEixo = eixo;
+      document.querySelectorAll('.eixo-btn').forEach(btn => {
+        const active = btn.getAttribute('data-eixo') === eixo;
+        if (active) {
+          btn.className = 'eixo-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-rosaantigo text-offwhite shadow-sm transition-all cursor-pointer';
+        } else if (btn.getAttribute('data-eixo') === 'kit') {
+          btn.className = 'eixo-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-douradofosco/20 hover:bg-douradofosco/35 text-cafe border border-douradofosco/50 transition-all cursor-pointer';
+        } else {
+          btn.className = 'eixo-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium bg-white hover:bg-verdementa/40 text-cafe border border-douradofosco/30 transition-all cursor-pointer';
+        }
+      });
+      filterRepertorios();
+    }
+
+    function filterRepertorios() {
+      const query = document.getElementById('repertorioSearch').value.toLowerCase().trim();
+      const container = document.getElementById('repertoriosContainer');
+
+      let filtered = repertoriosData.filter(item => {
+        const matchesEixo =
+          currentEixo === 'todos' ? true :
+          currentEixo === 'kit' ? item.kitTop !== null :
+          item.eixo === currentEixo;
+
+        const matchesSearch = !query || (
+          item.titulo.toLowerCase().includes(query) ||
+          item.sintese.toLowerCase().includes(query) ||
+          item.comoEncaixar.toLowerCase().includes(query) ||
+          (item.ideiaChave && item.ideiaChave.toLowerCase().includes(query))
+        );
+
+        return matchesEixo && matchesSearch;
+      });
+
+      if (currentEixo === 'kit') {
+        filtered.sort((a, b) => a.kitTop - b.kitTop);
+      }
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="bg-white/80 rounded-3xl p-8 text-center border border-douradofosco/30">
+            <p class="font-display text-2xl font-bold text-cafe">Nenhum repertório encontrado</p>
+            <p class="text-sm text-cafesuave mt-1">Tente buscar por outro termo ou selecione "Todos".</p>
+          </div>
+        `;
+        return;
+      }
+
+      let kitBanner = '';
+      if (currentEixo === 'kit') {
+        kitBanner = `
+          <div class="bg-douradofosco/15 rounded-3xl p-5 sm:p-6 border border-douradofosco/45">
+            <h4 class="font-display text-2xl font-bold text-cafe mb-1.5">🧠 Kit Definitivo: os 15 repertórios mais versáteis</h4>
+            <p class="text-sm text-cafesuave leading-relaxed">
+              Você não precisa decorar 30 citações. Priorize estes <strong class="text-cafe">15 repertórios</strong> porque eles oferecem maior profundidade argumentativa sem parecerem repertórios “coringa” decorados: aprenda a <strong class="text-cafe">ideia central</strong> de cada um e deduza na hora da prova como ela explica o problema do tema.
+            </p>
+          </div>
+        `;
+      }
+
+      const cardsHtml = filtered.map(item => `
+        <article class="bg-white/90 rounded-3xl p-5 sm:p-6 border ${item.kitTop ? 'border-douradofosco/45' : 'border-douradofosco/25'} shadow-card flex flex-col justify-between">
+          <div>
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-verdementa/65 text-cafe">${item.eixoLabel}</span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-offwhite text-cafesuave border border-douradofosco/25">${item.tipo}</span>
+              </div>
+              ${item.kitTop ? `<span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-douradofosco/25 text-cafe">★ Top #${item.kitTop} Kit</span>` : ''}
+            </div>
+
+            <h4 class="font-display text-xl sm:text-2xl font-bold text-cafe mb-3">${item.titulo}</h4>
+
+            <div class="space-y-2.5 text-sm leading-relaxed">
+              <p class="text-cafesuave">
+                <strong class="text-cafe">Síntese:</strong> ${item.sintese}
+              </p>
+              <p class="text-cafesuave">
+                <strong class="text-rosaantigo">Como encaixar:</strong> ${item.comoEncaixar}
+              </p>
+            </div>
+          </div>
+
+          ${item.ideiaChave ? `
+            <div class="mt-4 pt-3 border-t border-douradofosco/20">
+              <div class="p-3 rounded-2xl bg-blush/35 border border-rosaantigo/25 text-xs sm:text-sm text-cafe">
+                <strong class="text-rosaantigo">💡 Ideia-chave:</strong> ${item.ideiaChave}
+              </div>
+            </div>
+          ` : ''}
+        </article>
+      `).join('');
+
+      container.innerHTML = `${kitBanner}<div class="grid grid-cols-1 md:grid-cols-2 gap-5">${cardsHtml}</div>`;
+    }
+
+    // ---------------------------------------------------------
+    // 5. DIÁRIO DE REGISTRO DE REDAÇÕES (LOCALSTORAGE)
+    // ---------------------------------------------------------
+    const STORAGE_KEY = 'cafe_e_redacao_registros_v1';
+
+    function getRegistros() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function setRegistros(list) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+    }
+
+    function toggleRegistroForm(show, registroToEdit = null) {
+      const card = document.getElementById('registroFormCard');
+      const form = document.getElementById('registroForm');
+      const title = document.getElementById('formTitle');
+
+      if (!show) {
+        card.classList.add('hidden');
+        form.reset();
+        document.getElementById('editRegistroId').value = '';
+        return;
+      }
+
+      card.classList.remove('hidden');
+      if (registroToEdit) {
+        title.textContent = 'Editar registro de redação';
+        document.getElementById('editRegistroId').value = registroToEdit.id;
+        document.getElementById('regTema').value = registroToEdit.tema;
+        document.getElementById('regNota').value = registroToEdit.nota;
+        document.getElementById('regData').value = registroToEdit.data;
+        document.getElementById('regErros').value = registroToEdit.erros;
+      } else {
+        title.textContent = 'Nova ficha de redação';
+        form.reset();
+        document.getElementById('editRegistroId').value = '';
+        // Preenche data de hoje por padrão
+        document.getElementById('regData').value = new Date().toISOString().split('T')[0];
+      }
+
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function saveRegistro(event) {
+      event.preventDefault();
+      const id = document.getElementById('editRegistroId').value;
+      const tema = document.getElementById('regTema').value.trim();
+      const nota = Number(document.getElementById('regNota').value);
+      const data = document.getElementById('regData').value;
+      const erros = document.getElementById('regErros').value.trim();
+
+      let registros = getRegistros();
+
+      if (id) {
+        registros = registros.map(item =>
+          item.id === id ? { id, tema, nota, data, erros } : item
+        );
+      } else {
+        registros.unshift({
+          id: Date.now().toString(),
+          tema,
+          nota,
+          data,
+          erros
+        });
+      }
+
+      setRegistros(registros);
+      toggleRegistroForm(false);
+      renderRegistros();
+    }
+
+    function editRegistro(id) {
+      const registro = getRegistros().find(r => r.id === id);
+      if (registro) {
+        toggleRegistroForm(true, registro);
+      }
+    }
+
+    function deleteRegistro(id) {
+      const updated = getRegistros().filter(r => r.id !== id);
+      setRegistros(updated);
+      renderRegistros();
+    }
+
+    function formatDateBR(isoDate) {
+      if (!isoDate) return '';
+      const [y, m, d] = isoDate.split('-');
+      return `${d}/${m}/${y}`;
+    }
+
+    function renderRegistros() {
+      const registros = getRegistros();
+      const listEl = document.getElementById('registrosList');
+
+      // Atualiza métricas
+      document.getElementById('statTotal').textContent = registros.length;
+      if (registros.length > 0) {
+        const soma = registros.reduce((acc, r) => acc + Number(r.nota), 0);
+        const media = Math.round(soma / registros.length);
+        const max = Math.max(...registros.map(r => Number(r.nota)));
+        document.getElementById('statMedia').textContent = media;
+        document.getElementById('statMax').textContent = max;
+      } else {
+        document.getElementById('statMedia').textContent = '—';
+        document.getElementById('statMax').textContent = '—';
+      }
+
+      if (registros.length === 0) {
+        listEl.innerHTML = `
+          <div class="col-span-full bg-white/80 rounded-3xl p-8 sm:p-10 text-center border border-dashed border-douradofosco/50">
+            <div class="text-4xl mb-2">📓</div>
+            <h4 class="font-display text-2xl font-bold text-cafe">Seu caderno de evolução ainda está em branco</h4>
+            <p class="text-sm text-cafesuave max-w-md mx-auto mt-1 mb-4">
+              Clique no botão <strong>+ Registrar nova redação</strong> acima para anotar o tema, sua nota, a data e os pontos que você quer melhorar na próxima semana.
+            </p>
+            <button onclick="toggleRegistroForm(true)" class="px-5 py-2.5 rounded-xl bg-blush/75 hover:bg-rosaantigo text-cafe hover:text-offwhite text-xs font-semibold transition-colors cursor-pointer">
+              + adicionar minha primeira redação
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      listEl.innerHTML = registros.map(reg => {
+        const badgeColor =
+          reg.nota >= 900 ? 'bg-verdementa text-cafe border-verdesalvia/50' :
+          reg.nota >= 800 ? 'bg-blush/75 text-cafe border-rosaantigo/40' :
+          'bg-offwhite text-cafe border-douradofosco/40';
+
+        return `
+          <article class="bg-white/90 rounded-3xl p-5 sm:p-6 border border-douradofosco/30 shadow-card flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-3">
+                <span class="text-xs font-semibold text-cafesuave flex items-center gap-1.5">
+                  <span>📅</span> ${formatDateBR(reg.data)}
+                </span>
+                <span class="px-3 py-1 rounded-full text-xs font-bold border ${badgeColor}">
+                  Nota: ${reg.nota} / 1000
+                </span>
+              </div>
+
+              <h4 class="font-display text-xl sm:text-2xl font-bold text-cafe mb-3 leading-snug">
+                ${escapeHtml(reg.tema)}
+              </h4>
+
+              <div class="p-3.5 rounded-2xl bg-offwhite border border-douradofosco/25">
+                <span class="text-xs font-bold uppercase tracking-wider text-rosaantigo block mb-1">Principais erros &amp; atenção</span>
+                <p class="text-sm text-cafesuave leading-relaxed whitespace-pre-line">${escapeHtml(reg.erros)}</p>
+              </div>
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-douradofosco/15 flex items-center justify-end gap-2">
+              <button onclick="editRegistro('${reg.id}')" class="px-3 py-1.5 rounded-lg bg-offwhite hover:bg-verdementa/50 text-cafe text-xs font-medium transition-colors cursor-pointer">
+                ✏️ editar
+              </button>
+              <button onclick="deleteRegistro('${reg.id}')" class="px-3 py-1.5 rounded-lg bg-offwhite hover:bg-rosaantigo/20 text-rosaantigo text-xs font-medium transition-colors cursor-pointer">
+                🗑️ excluir
+              </button>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    // Inicialização ao carregar a página
+    window.addEventListener('DOMContentLoaded', () => {
+      filterRepertorios();
+      renderRegistros();
+    });
+  </script>
+</body>
+</html>
